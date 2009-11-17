@@ -1,4 +1,6 @@
 .*.swp
+db/schema.rb
 config/database.yml
+config/initializers/session_store.rb
 log/*
 tmp
