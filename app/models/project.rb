@@ -21,12 +21,9 @@ class Project < ActiveRecord::Base
   STATUS_ARCHIVED   = 9
   
   # Specific overidden Activities
-  has_many :time_entry_activities do
-    def active
-      find(:all, :conditions => {:active => true})
-    end
-  end
-  has_many :members, :include => :user, :conditions => "#{User.table_name}.type='User' AND #{User.table_name}.status=#{User::STATUS_ACTIVE}"
+  has_many :time_entry_activities
+  has_many :members, :include => [:user, :roles], :conditions => "#{User.table_name}.type='User' AND #{User.table_name}.status=#{User::STATUS_ACTIVE}"
+  has_many :memberships, :class_name => 'Member'
   has_many :member_principals, :class_name => 'Member', 
                                :include => :principal,
                                :conditions => "#{Principal.table_name}.type='Group' OR (#{Principal.table_name}.type='User' AND #{Principal.table_name}.status=#{User::STATUS_ACTIVE})"
@@ -91,21 +88,6 @@ class Project < ActiveRecord::Base
   def identifier_frozen?
     errors[:identifier].nil? && !(new_record? || identifier.blank?)
   end
-  
-  def issues_with_subprojects(include_subprojects=false)
-    conditions = nil
-    if include_subprojects
-      ids = [id] + descendants.collect(&:id)
-      conditions = ["#{Project.table_name}.id IN (#{ids.join(',')}) AND #{Project.visible_by}"]
-    end
-    conditions ||= ["#{Project.table_name}.id = ?", id]
-    # Quick and dirty fix for Rails 2 compatibility
-    Issue.send(:with_scope, :find => { :conditions => conditions }) do 
-      Version.send(:with_scope, :find => { :conditions => conditions }) do
-        yield
-      end
-    end 
-  end
 
   # returns latest created projects
   # non public projects will be returned only if user is a member of those
@@ -148,14 +130,16 @@ class Project < ActiveRecord::Base
     else
       statements << "1=0"
       if user.logged?
-        statements << "#{Project.table_name}.is_public = #{connection.quoted_true}" if Role.non_member.allowed_to?(permission)
+        if Role.non_member.allowed_to?(permission) && !options[:member]
+          statements << "#{Project.table_name}.is_public = #{connection.quoted_true}"
+        end
         allowed_project_ids = user.memberships.select {|m| m.roles.detect {|role| role.allowed_to?(permission)}}.collect {|m| m.project_id}
         statements << "#{Project.table_name}.id IN (#{allowed_project_ids.join(',')})" if allowed_project_ids.any?
-      elsif Role.anonymous.allowed_to?(permission)
-        # anonymous user allowed on public project
-        statements << "#{Project.table_name}.is_public = #{connection.quoted_true}" 
       else
-        # anonymous user is not authorized
+        if Role.anonymous.allowed_to?(permission) && !options[:member]
+          # anonymous user allowed on public project
+          statements << "#{Project.table_name}.is_public = #{connection.quoted_true}"
+        end 
       end
     end
     statements.empty? ? base_statement : "((#{base_statement}) AND (#{statements.join(' OR ')}))"
@@ -236,13 +220,20 @@ class Project < ActiveRecord::Base
     self.status == STATUS_ACTIVE
   end
   
-  # Archives the project and its descendants recursively
+  # Archives the project and its descendants
   def archive
-    # Archive subprojects if any
-    children.each do |subproject|
-      subproject.archive
+    # Check that there is no issue of a non descendant project that is assigned
+    # to one of the project or descendant versions
+    v_ids = self_and_descendants.collect {|p| p.version_ids}.flatten
+    if v_ids.any? && Issue.find(:first, :include => :project,
+                                        :conditions => ["(#{Project.table_name}.lft < ? OR #{Project.table_name}.rgt > ?)" +
+                                                        " AND #{Issue.table_name}.fixed_version_id IN (?)", lft, rgt, v_ids])
+      return false
     end
-    update_attribute :status, STATUS_ARCHIVED
+    Project.transaction do
+      archive!
+    end
+    true
   end
   
   # Unarchives the project
@@ -253,8 +244,38 @@ class Project < ActiveRecord::Base
   end
   
   # Returns an array of projects the project can be moved to
-  def possible_parents
-    @possible_parents ||= (Project.active.find(:all) - self_and_descendants)
+  # by the current user
+  def allowed_parents
+    return @allowed_parents if @allowed_parents
+    @allowed_parents = Project.find(:all, :conditions => Project.allowed_to_condition(User.current, :add_subprojects))
+    @allowed_parents = @allowed_parents - self_and_descendants
+    if User.current.allowed_to?(:add_project, nil, :global => true)
+      @allowed_parents << nil
+    end
+    unless parent.nil? || @allowed_parents.empty? || @allowed_parents.include?(parent)
+      @allowed_parents << parent
+    end
+    @allowed_parents
+  end
+  
+  # Sets the parent of the project with authorization check
+  def set_allowed_parent!(p)
+    unless p.nil? || p.is_a?(Project)
+      if p.to_s.blank?
+        p = nil
+      else
+        p = Project.find_by_id(p)
+        return false unless p
+      end
+    end
+    if p.nil?
+      if !new_record? && allowed_parents.empty?
+        return false
+      end
+    elsif !allowed_parents.include?(p)
+      return false
+    end
+    set_parent!(p)
   end
   
   # Sets the parent of the project
@@ -288,6 +309,7 @@ class Project < ActiveRecord::Base
         # move_to_child_of adds the project in last (ie.right) position
         move_to_child_of(p)
       end
+      Issue.update_versions_from_hierarchy_change(self)
       true
     else
       # Can not move to the given target
@@ -315,6 +337,19 @@ class Project < ActiveRecord::Base
     end
   end
   
+  # Returns a scope of the Versions used by the project
+  def shared_versions
+    @shared_versions ||= 
+      Version.scoped(:include => :project,
+                     :conditions => "#{Project.table_name}.id = #{id}" +
+                                    " OR (#{Project.table_name}.status = #{Project::STATUS_ACTIVE} AND (" +
+                                          " #{Version.table_name}.sharing = 'system'" +
+                                          " OR (#{Project.table_name}.lft >= #{root.lft} AND #{Project.table_name}.rgt <= #{root.rgt} AND #{Version.table_name}.sharing = 'tree')" +
+                                          " OR (#{Project.table_name}.lft < #{lft} AND #{Project.table_name}.rgt > #{rgt} AND #{Version.table_name}.sharing IN ('hierarchy', 'descendants'))" +
+                                          " OR (#{Project.table_name}.lft > #{lft} AND #{Project.table_name}.rgt < #{rgt} AND #{Version.table_name}.sharing = 'hierarchy')" +
+                                          "))")
+  end
+
   # Returns a hash of project users grouped by role
   def users_by_role
     members.find(:all, :include => [:user, :roles]).inject({}) do |h, m|
@@ -341,6 +376,11 @@ class Project < ActiveRecord::Base
   # Returns the mail adresses of users that should be always notified on project events
   def recipients
     members.select {|m| m.mail_notification? || m.user.mail_notification?}.collect {|m| m.user.mail}
+  end
+  
+  # Returns the users that should be notified on project events
+  def notified_users
+    members.select {|m| m.mail_notification? || m.user.mail_notification?}.collect {|m| m.user}
   end
   
   # Returns an array of all custom fields enabled for project issues
@@ -494,6 +534,10 @@ class Project < ActiveRecord::Base
   
   # Copies issues from +project+
   def copy_issues(project)
+    # Stores the source issue id as a key and the copied issues as the
+    # value.  Used to map the two togeather for issue relations.
+    issues_map = {}
+    
     project.issues.each do |issue|
       new_issue = Issue.new
       new_issue.copy_from(issue)
@@ -508,15 +552,46 @@ class Project < ActiveRecord::Base
         new_issue.category = self.issue_categories.select {|c| c.name == issue.category.name}.first
       end
       self.issues << new_issue
+      issues_map[issue.id] = new_issue
+    end
+
+    # Relations after in case issues related each other
+    project.issues.each do |issue|
+      new_issue = issues_map[issue.id]
+      
+      # Relations
+      issue.relations_from.each do |source_relation|
+        new_issue_relation = IssueRelation.new
+        new_issue_relation.attributes = source_relation.attributes.dup.except("id", "issue_from_id", "issue_to_id")
+        new_issue_relation.issue_to = issues_map[source_relation.issue_to_id]
+        if new_issue_relation.issue_to.nil? && Setting.cross_project_issue_relations?
+          new_issue_relation.issue_to = source_relation.issue_to
+        end
+        new_issue.relations_from << new_issue_relation
+      end
+      
+      issue.relations_to.each do |source_relation|
+        new_issue_relation = IssueRelation.new
+        new_issue_relation.attributes = source_relation.attributes.dup.except("id", "issue_from_id", "issue_to_id")
+        new_issue_relation.issue_from = issues_map[source_relation.issue_from_id]
+        if new_issue_relation.issue_from.nil? && Setting.cross_project_issue_relations?
+          new_issue_relation.issue_from = source_relation.issue_from
+        end
+        new_issue.relations_to << new_issue_relation
+      end
     end
   end
 
   # Copies members from +project+
   def copy_members(project)
-    project.members.each do |member|
+    project.memberships.each do |member|
       new_member = Member.new
       new_member.attributes = member.attributes.dup.except("id", "project_id", "created_on")
-      new_member.role_ids = member.role_ids.dup
+      # only copy non inherited roles
+      # inherited roles will be added when copying the group membership
+      role_ids = member.member_roles.reject(&:inherited?).collect(&:role_id)
+      next if role_ids.empty?
+      new_member.role_ids = role_ids
       new_member.project = self
       self.members << new_member
     end
@@ -556,10 +631,10 @@ class Project < ActiveRecord::Base
 
   # Returns all the active Systemwide and project specific activities
   def active_activities
-    overridden_activity_ids = self.time_entry_activities.active.collect(&:parent_id)
-
+    overridden_activity_ids = self.time_entry_activities.collect(&:parent_id)
+    
     if overridden_activity_ids.empty?
-      return TimeEntryActivity.active
+      return TimeEntryActivity.shared.active
     else
       return system_activities_and_project_overrides
     end
@@ -571,7 +646,7 @@ class Project < ActiveRecord::Base
     overridden_activity_ids = self.time_entry_activities.collect(&:parent_id)
 
     if overridden_activity_ids.empty?
-      return TimeEntryActivity.all
+      return TimeEntryActivity.shared
     else
       return system_activities_and_project_overrides(true)
     end
@@ -580,15 +655,23 @@ class Project < ActiveRecord::Base
   # Returns the systemwide active activities merged with the project specific overrides
   def system_activities_and_project_overrides(include_inactive=false)
     if include_inactive
-      return TimeEntryActivity.all.
+      return TimeEntryActivity.shared.
         find(:all,
              :conditions => ["id NOT IN (?)", self.time_entry_activities.collect(&:parent_id)]) +
         self.time_entry_activities
     else
-      return TimeEntryActivity.active.
+      return TimeEntryActivity.shared.active.
         find(:all,
-             :conditions => ["id NOT IN (?)", self.time_entry_activities.active.collect(&:parent_id)]) +
+             :conditions => ["id NOT IN (?)", self.time_entry_activities.collect(&:parent_id)]) +
         self.time_entry_activities.active
     end
+  end
+  
+  # Archives subprojects recursively
+  def archive!
+    children.each do |subproject|
+      subproject.send :archive!
+    end
+    update_attribute :status, STATUS_ARCHIVED
   end
 end

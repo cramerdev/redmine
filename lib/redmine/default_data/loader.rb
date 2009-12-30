@@ -49,6 +49,7 @@ module Redmine
                                       :position => 2, 
                                       :permissions => [:manage_versions, 
                                                       :manage_categories,
+                                                      :view_issues,
                                                       :add_issues,
                                                       :edit_issues,
                                                       :manage_issue_relations,
@@ -74,7 +75,8 @@ module Redmine
             
             reporter = Role.create! :name => l(:default_role_reporter),
                                     :position => 3,
-                                    :permissions => [:add_issues,
+                                    :permissions => [:view_issues,
+                                                    :add_issues,
                                                     :add_issue_notes,
                                                     :save_queries,
                                                     :view_gantt,
@@ -91,7 +93,8 @@ module Redmine
                                                     :browse_repository,
                                                     :view_changesets]
                         
-            Role.non_member.update_attribute :permissions, [:add_issues,
+            Role.non_member.update_attribute :permissions, [:view_issues,
+                                                            :add_issues,
                                                             :add_issue_notes,
                                                             :save_queries,
                                                             :view_gantt,
@@ -106,7 +109,8 @@ module Redmine
                                                             :browse_repository,
                                                             :view_changesets]
           
-            Role.anonymous.update_attribute :permissions, [:view_gantt,
+            Role.anonymous.update_attribute :permissions, [:view_issues,
+                                                           :view_gantt,
                                                            :view_calendar,
                                                            :view_time_entries,
                                                            :view_documents,
@@ -156,17 +160,17 @@ module Redmine
             }
           
             # Enumerations
-            DocumentCategory.create!(:opt => "DCAT", :name => l(:default_doc_category_user), :position => 1)
-            DocumentCategory.create!(:opt => "DCAT", :name => l(:default_doc_category_tech), :position => 2)
+            DocumentCategory.create!(:name => l(:default_doc_category_user), :position => 1)
+            DocumentCategory.create!(:name => l(:default_doc_category_tech), :position => 2)
           
-            IssuePriority.create!(:opt => "IPRI", :name => l(:default_priority_low), :position => 1)
-            IssuePriority.create!(:opt => "IPRI", :name => l(:default_priority_normal), :position => 2, :is_default => true)
-            IssuePriority.create!(:opt => "IPRI", :name => l(:default_priority_high), :position => 3)
-            IssuePriority.create!(:opt => "IPRI", :name => l(:default_priority_urgent), :position => 4)
-            IssuePriority.create!(:opt => "IPRI", :name => l(:default_priority_immediate), :position => 5)
+            IssuePriority.create!(:name => l(:default_priority_low), :position => 1)
+            IssuePriority.create!(:name => l(:default_priority_normal), :position => 2, :is_default => true)
+            IssuePriority.create!(:name => l(:default_priority_high), :position => 3)
+            IssuePriority.create!(:name => l(:default_priority_urgent), :position => 4)
+            IssuePriority.create!(:name => l(:default_priority_immediate), :position => 5)
           
-            TimeEntryActivity.create!(:opt => "ACTI", :name => l(:default_activity_design), :position => 1)
-            TimeEntryActivity.create!(:opt => "ACTI", :name => l(:default_activity_development), :position => 2)
+            TimeEntryActivity.create!(:name => l(:default_activity_design), :position => 1)
+            TimeEntryActivity.create!(:name => l(:default_activity_development), :position => 2)
           end
           true
         end
