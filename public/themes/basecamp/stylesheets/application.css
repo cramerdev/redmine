@@ -106,3 +106,6 @@ hr { background:#eee none repeat scroll 0% 0%; }
 
 /* # Added by Smith on 5/14/09 */
 #header img.logo { float: right; height: 50px; margin-right: 50px; }
+
+/* # Added by Smith on 1/18/10 */
+ul.toc { float: right; }
