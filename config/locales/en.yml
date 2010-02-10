@@ -329,12 +329,14 @@ en:
   setting_issue_done_ratio_issue_status: Use the ticket status
   setting_start_of_week: Start calendars on
   setting_rest_api_enabled: Enable REST web service
+  setting_cache_formatted_text: Cache formatted text
   
   permission_add_project: Create project
   permission_add_subprojects: Create subprojects
   permission_edit_project: Edit project
   permission_select_project_modules: Select project modules
   permission_manage_members: Manage members
+  permission_manage_project_activities: Manage project activities
   permission_manage_versions: Manage versions
   permission_manage_categories: Manage ticket categories
   permission_view_issues: View Tickets
@@ -382,6 +384,7 @@ en:
   permission_edit_own_messages: Edit own messages
   permission_delete_messages: Delete messages
   permission_delete_own_messages: Delete own messages
+  permission_export_wiki_pages: Export wiki pages
   
   project_module_issue_tracking: Ticket tracking
   project_module_time_tracking: Time tracking
@@ -882,3 +885,4 @@ en:
   enumeration_doc_categories: Document categories
   enumeration_activities: Activities (time tracking)
   enumeration_system_activity: System Activity
+
