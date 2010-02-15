@@ -137,9 +137,11 @@ table.files tr.file td.digest { font-size: 80%; }
 table.members td.roles, table.memberships td.roles { width: 45%; }
 
 tr.message { height: 2.6em; }
-tr.message td.last_message { font-size: 80%; }
-tr.message.locked td.subject a { background-image: url(../images/locked.png); }
-tr.message.sticky td.subject a { background-image: url(../images/sticky.png); font-weight: bold; }
+tr.message td.subject { padding-left: 20px; }
+tr.message td.created_on { white-space: nowrap; }
+tr.message td.last_message { font-size: 80%; white-space: nowrap; }
+tr.message.locked td.subject { background: url(../images/locked.png) no-repeat 0 1px; }
+tr.message.sticky td.subject { background: url(../images/bullet_go.png) no-repeat 0 1px; font-weight: bold; }
 
 tr.version.closed, tr.version.closed a { color: #999; }
 tr.version td.name { padding-left: 20px; }
@@ -728,6 +730,7 @@ background-image:url('../images/close_hl.png');
   padding:0;
   margin:0;
   line-height:0.8em;
+  white-space:nowrap;
 }
 
 .task_late { background:#f66 url(../images/task_late.png); border: 1px solid #f66; }
