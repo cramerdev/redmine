@@ -67,7 +67,7 @@ h4, .wiki h3 {font-size: 13px;padding: 2px 10px 1px 0px;margin-bottom: 5px; bord
 
 #main {background-color:#EEEEEE;}
 
-#sidebar{ float: right; width: 17%; position: relative; z-index: 9; min-height: 600px; padding: 0; margin: 0;}
+#sidebar{ float: right; width: 17%; position: relative; z-index: 9; padding: 0; margin: 0;}
 * html #sidebar{ width: 17%; }
 #sidebar h3{ font-size: 14px; margin-top:14px; color: #666;  }
 #sidebar hr{ width: 100%; margin: 0 auto; height: 1px; background: #ccc; border: 0; }
@@ -299,9 +299,9 @@ table#time-report tbody tr.last-level { font-style: normal; color: #555; }
 table#time-report tbody tr.total { font-style: normal; font-weight: bold; color: #555; background-color:#EEEEEE; }
 table#time-report .hours-dec { font-size: 0.9em; }
 
-form#issue-form .attributes { margin-bottom: 8px; }
-form#issue-form .attributes p { padding-top: 1px; padding-bottom: 2px; }
-form#issue-form .attributes select { min-width: 30%; }
+form .attributes { margin-bottom: 8px; }
+form .attributes p { padding-top: 1px; padding-bottom: 2px; }
+form .attributes select { min-width: 50%; }
 
 ul.projects { margin: 0; padding-left: 1em; }
 ul.projects.root { margin: 0;  padding: 0; }
@@ -481,6 +481,10 @@ table.cal td p.day-num {font-size: 1.1em; text-align:right;}
 table.cal td.odd p.day-num {color: #bbb;}
 table.cal td.today {background:#ffffdd;}
 table.cal td.today p.day-num {font-weight: bold;}
+table.cal .starting a, p.cal.legend .starting {background: url(../images/bullet_go.png) no-repeat -1px -2px; padding-left:16px;}
+table.cal .ending a, p.cal.legend .ending {background: url(../images/bullet_end.png) no-repeat -1px -2px; padding-left:16px;}
+table.cal .starting.ending a, p.cal.legend .starting.ending {background: url(../images/bullet_diamond.png) no-repeat -1px -2px; padding-left:16px;}
+p.cal.legend span {display:block;}
 
 /***** Tooltips ******/
 .tooltip{position:relative;z-index:24;}

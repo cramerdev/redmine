@@ -56,9 +56,9 @@ class Project < ActiveRecord::Base
                      :delete_permission => :manage_files
 
   acts_as_customizable
-  acts_as_searchable :columns => ['name', 'description'], :project_key => 'id', :permission => nil
+  acts_as_searchable :columns => ['name', 'identifier', 'description'], :project_key => 'id', :permission => nil
   acts_as_event :title => Proc.new {|o| "#{l(:label_project)}: #{o.name}"},
-                :url => Proc.new {|o| {:controller => 'projects', :action => 'show', :id => o.id}},
+                :url => Proc.new {|o| {:controller => 'projects', :action => 'show', :id => o}},
                 :author => nil
 
   attr_protected :status, :enabled_module_names
@@ -639,7 +639,7 @@ class Project < ActiveRecord::Base
   
   def allowed_permissions
     @allowed_permissions ||= begin
-      module_names = enabled_modules.collect {|m| m.name}
+      module_names = enabled_modules.all(:select => :name).collect {|m| m.name}
       Redmine::AccessControl.modules_permissions(module_names).collect {|p| p.name}
     end
   end

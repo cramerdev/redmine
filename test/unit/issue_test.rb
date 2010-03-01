@@ -20,6 +20,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 class IssueTest < ActiveSupport::TestCase
   fixtures :projects, :users, :members, :member_roles, :roles,
            :trackers, :projects_trackers,
+           :enabled_modules,
            :versions,
            :issue_statuses, :issue_categories, :issue_relations, :workflows, 
            :enumerations,
@@ -528,6 +529,30 @@ class IssueTest < ActiveSupport::TestCase
       stale.save
     end
     assert ActionMailer::Base.deliveries.empty?
+  end
+  
+  def test_saving_twice_should_not_duplicate_journal_details
+    i = Issue.find(:first)
+    i.init_journal(User.find(2), 'Some notes')
+    # initial changes
+    i.subject = 'New subject'
+    i.done_ratio = i.done_ratio + 10
+    assert_difference 'Journal.count' do
+      assert i.save
+    end
+    # 1 more change
+    i.priority = IssuePriority.find(:first, :conditions => ["id <> ?", i.priority_id])
+    assert_no_difference 'Journal.count' do
+      assert_difference 'JournalDetail.count', 1 do
+        i.save
+      end
+    end
+    # no more change
+    assert_no_difference 'Journal.count' do
+      assert_no_difference 'JournalDetail.count' do
+        i.save
+      end
+    end
   end
 
   context "#done_ratio" do
