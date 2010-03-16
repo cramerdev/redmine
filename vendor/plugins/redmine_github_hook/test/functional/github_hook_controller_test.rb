@@ -89,6 +89,13 @@ class GithubHookControllerTest < ActionController::TestCase
     post :index, :project_id => 'redmine', :payload => @json
   end
 
+  def test_should_downcase_identifier
+    # Redmine project identifiers are always downcase
+    Project.expects(:find_by_identifier).with('redmine').returns(@project)
+    @controller.stubs(:exec).returns(true)
+    post :index, :project_id => 'ReDmInE', :payload => @json
+  end
+
   def test_should_render_ok_when_done
     @controller.expects(:exec).returns(true)
     do_post
@@ -104,6 +111,12 @@ class GithubHookControllerTest < ActionController::TestCase
     assert_equal 'OK', @response.body
   end
 
+  def test_should_return_404_if_project_identifier_not_given
+    assert_raises ActiveRecord::RecordNotFound do
+      do_post :repository => {}
+    end
+  end
+
   def test_should_return_404_if_project_not_found
     assert_raises ActiveRecord::RecordNotFound do
       Project.expects(:find_by_identifier).with('foobar').returns(nil)
@@ -113,7 +126,7 @@ class GithubHookControllerTest < ActionController::TestCase
 
   def test_should_return_500_if_project_has_no_repository
     assert_raises TypeError do
-      project = mock('project')
+      project = mock('project', :to_s => 'My Project', :identifier => 'github')
       project.expects(:repository).returns(nil)
       Project.expects(:find_by_identifier).with('github').returns(project)
       do_post :repository => {:name => 'github'}
@@ -122,7 +135,7 @@ class GithubHookControllerTest < ActionController::TestCase
 
   def test_should_return_500_if_repository_is_not_git
     assert_raises TypeError do
-      project = mock('project')
+      project = mock('project', :to_s => 'My Project', :identifier => 'github')
       repository = Repository::Subversion.new
       project.expects(:repository).at_least(1).returns(repository)
       Project.expects(:find_by_identifier).with('github').returns(project)
