@@ -175,6 +175,7 @@ de:
   notice_account_pending: "Ihr Konto wurde erstellt und wartet jetzt auf die Genehmigung des Administrators."
   notice_default_data_loaded: Die Standard-Konfiguration wurde erfolgreich geladen.
   notice_unable_delete_version: Die Version konnte nicht gelöscht werden.
+  notice_unable_delete_time_entry: Der Zeiterfassungseintrag konnte nicht gelöscht werden.
   notice_issue_done_ratios_updated: Der Ticket-Fortschritt wurde aktualisiert.
 
   error_can_t_load_default_data: "Die Standard-Konfiguration konnte nicht geladen werden: {{value}}"
@@ -646,6 +647,7 @@ de:
   label_changes_details: Details aller Änderungen
   label_issue_tracking: Tickets
   label_spent_time: Aufgewendete Zeit
+  label_overall_spent_time: Aufgewendete Zeit aller Projekte anzeigen
   label_f_hour: "{{value}} Stunde"
   label_f_hour_plural: "{{value}} Stunden"
   label_time_tracking: Zeiterfassung
@@ -900,9 +902,21 @@ de:
   default_priority_immediate: Sofort
   default_activity_design: Design
   default_activity_development: Entwicklung
-
   enumeration_issue_priorities: Ticket-Prioritäten
   enumeration_doc_categories: Dokumentenkategorien
   enumeration_activities: Aktivitäten (Zeiterfassung)
   enumeration_system_activity: System-Aktivität
-  label_profile: Profile
+  label_profile: Profil
+  permission_manage_subtasks: Unteraufgaben verwalten
+  field_parent_issue: Übergeordnete Aufgabe
+  label_subtask_plural: Unteraufgaben
+  label_project_copy_notifications: Sende Mailbenachrichtigungen beim Kopieren des Projekts.
+  error_can_not_delete_custom_field: Kann das benutzerdefinierte Feld nicht löschen.
+  error_unable_to_connect: Fehler beim Verbinden ({{value}})
+  error_can_not_remove_role: Diese Rolle wird verwendet und kann nicht gelöscht werden.
+  error_can_not_delete_tracker: Dieser Tracker enthält Tickets und kann nicht gelöscht werden.
+  field_principal: Principal
+  label_my_page_block: My page block
+  notice_failed_to_save_members: "Failed to save member(s): {{errors}}."
+  text_zoom_out: Zoom out
+  text_zoom_in: Zoom in
