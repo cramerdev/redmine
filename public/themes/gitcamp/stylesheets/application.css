@@ -149,5 +149,11 @@ ul.projects li.root div.root {margin-bottom: 1.6em;}
 
 ul.projects li.root div.root div.description { margin-top: -0.6em;}
 
-/* # Added by Smith on 6/28/10 */
+/* CramerDev Modifications */
 ul.toc { float: right; }
+#content { width: 85%; }
+#sidebar { width: 13%; }
+#sidebar a { display: block; margin-bottom: 0.25em; }
+#sidebar br { display: none; }
+#content .issue h3 { margin-top: 0.5em; }
+.wiki h2 { border-top: 0px !important; }
