@@ -27,12 +27,7 @@ class AccountController < ApplicationController
     if request.get?
       logout_user
     else
-      # Authenticate user
-      if Setting.openid? && using_open_id?
-        open_id_authenticate(params[:openid_url])
-      else
-        password_authentication
-      end
+      authenticate_user
     end
   end
 
@@ -140,6 +135,14 @@ class AccountController < ApplicationController
     end
   end
   
+  def authenticate_user
+    if Setting.openid? && using_open_id?
+      open_id_authenticate(params[:openid_url])
+    else
+      password_authentication
+    end
+  end
+
   def password_authentication
     user = User.try_to_login(params[:username], params[:password])
 
@@ -215,6 +218,7 @@ class AccountController < ApplicationController
   end
 
   def invalid_credentials
+    logger.warn "Failed login for '#{params[:username]}' from #{request.remote_ip} at #{Time.now.utc}"
     flash.now[:error] = l(:notice_account_invalid_creditentials)
   end
 
