@@ -109,3 +109,6 @@ hr { background:#eee none repeat scroll 0% 0%; }
 
 /* # Added by Smith on 1/18/10 */
 ul.toc { float: right; }
+
+/* # Added by Marino on 8/2/10 */
+div.wiki pre { padding: 10px; }
