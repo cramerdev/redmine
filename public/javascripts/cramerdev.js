@@ -17,4 +17,15 @@ $$("table.attributes tr th").each(function (label) {
     }
 });
 
+/**
+ * Turn off autocomplete on input fields (except username on log in) cuz
+ * it's lame to see that popup everytime I enter a ticket that starts
+ * with the same letters. - Marino 8/3/2010
+ */
+$$('input[type="text"]').each(function (i) {
+    if (i.id !== "username") {
+        i.writeAttribute("autocomplete", "off");
+    }
+});
+
 });
