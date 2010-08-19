@@ -86,6 +86,12 @@ class ActiveSupport::TestCase
     saved_settings.each {|k, v| Setting[k] = v}
   end
 
+  def change_user_password(login, new_password)
+    user = User.first(:conditions => {:login => login})
+    user.password, user.password_confirmation = new_password, new_password
+    user.save!
+  end
+
   def self.ldap_configured?
     @test_ldap = Net::LDAP.new(:host => '127.0.0.1', :port => 389)
     return @test_ldap.bind
@@ -160,6 +166,15 @@ class ActiveSupport::TestCase
         
         assert_match @old_value.name, show_detail(@detail, true)
       end
+    end
+  end
+
+  def self.should_create_a_new_user(&block)
+    should "create a new user" do
+      user = instance_eval &block
+      assert user
+      assert_kind_of User, user
+      assert !user.new_record?
     end
   end
 end
