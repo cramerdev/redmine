@@ -58,8 +58,9 @@ Redmine::AccessControl.map do |map|
     map.permission :manage_categories, {:projects => :settings, :issue_categories => [:new, :edit, :destroy]}, :require => :member
     # Issues
     map.permission :view_issues, {:projects => :roadmap, 
-                                  :issues => [:index, :changes, :show, :context_menu],
+                                  :issues => [:index, :changes, :show],
                                   :auto_complete => [:issues],
+                                  :context_menus => [:issues],
                                   :versions => [:show, :status_by],
                                   :queries => :index,
                                   :reports => [:issue_report, :issue_report_details]}
@@ -75,9 +76,6 @@ Redmine::AccessControl.map do |map|
     # Queries
     map.permission :manage_public_queries, {:queries => [:new, :edit, :destroy]}, :require => :member
     map.permission :save_queries, {:queries => [:new, :edit, :destroy]}, :require => :loggedin
-    # Gantt & calendar
-    map.permission :view_gantt, :gantts => :show
-    map.permission :view_calendar, :calendars => :show
     # Watchers
     map.permission :view_issue_watchers, {}
     map.permission :add_issue_watchers, {:watchers => :new}
@@ -135,6 +133,14 @@ Redmine::AccessControl.map do |map|
     map.permission :edit_own_messages, {:messages => :edit}, :require => :loggedin
     map.permission :delete_messages, {:messages => :destroy}, :require => :member
     map.permission :delete_own_messages, {:messages => :destroy}, :require => :loggedin
+  end
+
+  map.project_module :calendar do |map|
+    map.permission :view_calendar, :calendars => :show
+  end
+
+  map.project_module :gantt do |map|
+    map.permission :view_gantt, :gantts => :show
   end
 end
 
