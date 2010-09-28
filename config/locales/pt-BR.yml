@@ -143,6 +143,7 @@ pt-BR:
         greater_than_start_date: "deve ser maior que a data inicial"
         not_same_project: "não pertence ao mesmo projeto"
         circular_dependency: "Esta relação geraria uma dependência circular"
+        cant_link_an_issue_with_a_descendant: "An issue can not be linked to one of its subtasks"
 
   actionview_instancetag_blank_option: Selecione
 
@@ -916,7 +917,7 @@ pt-BR:
   permission_export_wiki_pages: Exportar páginas wiki
   setting_cache_formatted_text: Realizar cache de texto formatado
   permission_manage_project_activities: Gerenciar atividades do projeto
-  error_unable_delete_issue_status: Impossível excluir situação da tarefa
+  error_unable_delete_issue_status: Não foi possível excluir situação da tarefa
   label_profile: Perfil
   permission_manage_subtasks: Gerenciar subtarefas
   field_parent_issue: Tarefa pai
@@ -934,3 +935,10 @@ pt-BR:
   notice_unable_delete_time_entry: Não foi possível excluir a entrada no registro de horas trabalhadas.
   label_overall_spent_time: Tempo gasto geral
   field_time_entries: Log time
+  project_module_gantt: Gantt
+  project_module_calendar: Calendário
+  field_member_of_group: Mebro do grupo
+  field_assigned_to_role: Membro com o papel
+  button_edit_associated_wikipage: "Editar páginas wiki relacionadas: {{page_title}}"
+  text_are_you_sure_with_children: Excluir a tarefa e suas subtarefas?
+  field_text: Campo de texto
