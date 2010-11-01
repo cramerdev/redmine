@@ -232,7 +232,6 @@ it:
   field_attr_lastname: Attributo cognome
   field_attr_mail: Attributo email
   field_onthefly: Creazione utente "al volo"
-  field_start_date: Inizio
   field_done_ratio: % completato
   field_auth_source: Modalità di autenticazione
   field_hide_mail: Nascondi il mio indirizzo email
@@ -572,9 +571,9 @@ it:
   text_project_destroy_confirmation: Sei sicuro di voler eliminare il progetto e tutti i dati ad esso collegati?
   text_workflow_edit: Seleziona un ruolo ed un tracker per modificare il workflow
   text_are_you_sure: Sei sicuro ?
-  text_tip_task_begin_day: attività che iniziano in questa giornata
-  text_tip_task_end_day: attività che terminano in questa giornata
-  text_tip_task_begin_end_day: attività che iniziano e terminano in questa giornata
+  text_tip_issue_begin_day: attività che iniziano in questa giornata
+  text_tip_issue_end_day: attività che terminano in questa giornata
+  text_tip_issue_begin_end_day: attività che iniziano e terminano in questa giornata
   text_project_identifier_info: "Lettere minuscole (a-z), numeri e trattini permessi.<br />Una volta salvato, l'identificativo non può essere modificato."
   text_caracters_maximum: "massimo {{count}} caratteri."
   text_length_between: "Lunghezza compresa tra {{min}} e {{max}} caratteri."
@@ -922,3 +921,6 @@ it:
   button_edit_associated_wikipage: "Edit associated Wiki page: {{page_title}}"
   text_are_you_sure_with_children: Delete issue and all child issues?
   field_text: Text field
+  field_start_date: Start date
+  label_principal_search: "Search for user or group:"
+  label_user_search: "Search for user:"

@@ -261,7 +261,6 @@ sr:
   field_attr_lastname: Атрибут презимена
   field_attr_mail: Атрибут е-адресе
   field_onthefly: Креирање корисника у току рада
-  field_start_date: Почетак
   field_done_ratio: % урађено
   field_auth_source: Режим потврде идентитета
   field_hide_mail: Сакриј моју е-адресу
@@ -836,9 +835,9 @@ sr:
   text_journal_set_to: "{{label}} постављен у {{value}}"
   text_journal_deleted: "{{label}} избрисано ({{old}})"
   text_journal_added: "{{label}} {{value}} додато"
-  text_tip_task_begin_day: задатак почиње овог дана
-  text_tip_task_end_day: задатак се завршава овог дана
-  text_tip_task_begin_end_day: задатак почиње и завршава овог дана
+  text_tip_issue_begin_day: задатак почиње овог дана
+  text_tip_issue_end_day: задатак се завршава овог дана
+  text_tip_issue_begin_end_day: задатак почиње и завршава овог дана
   text_project_identifier_info: 'Дозвољена су само мала слова (a-ш), бројеви и цртице.<br />Једном снимљен идентификатор више се не може променити.'
   text_caracters_maximum: "Највише {{count}} знак(ова)."
   text_caracters_minimum: "Број знакова мора бити најмање {{count}}."
@@ -919,3 +918,6 @@ sr:
   button_edit_associated_wikipage: "Edit associated Wiki page: {{page_title}}"
   text_are_you_sure_with_children: Delete issue and all child issues?
   field_text: Text field
+  field_start_date: Start date
+  label_principal_search: "Search for user or group:"
+  label_user_search: "Search for user:"

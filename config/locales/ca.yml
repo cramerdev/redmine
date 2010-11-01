@@ -264,7 +264,6 @@ ca:
   field_attr_lastname: Atribut del cognom
   field_attr_mail: Atribut del correu electrònic
   field_onthefly: "Creació de l'usuari «al vol»"
-  field_start_date: Inici
   field_done_ratio: % realitzat
   field_auth_source: "Mode d'autenticació"
   field_hide_mail: "Oculta l'adreça de correu electrònic"
@@ -842,9 +841,9 @@ ca:
   text_journal_set_to: "{{label}} s'ha establert a {{value}}"
   text_journal_deleted: "{{label}} s'ha suprimit ({{old}})"
   text_journal_added: "S'ha afegit {{label}} {{value}}"
-  text_tip_task_begin_day: "tasca que s'inicia aquest dia"
-  text_tip_task_end_day: tasca que finalitza aquest dia
-  text_tip_task_begin_end_day: "tasca que s'inicia i finalitza aquest dia"
+  text_tip_issue_begin_day: "tasca que s'inicia aquest dia"
+  text_tip_issue_end_day: tasca que finalitza aquest dia
+  text_tip_issue_begin_end_day: "tasca que s'inicia i finalitza aquest dia"
   text_project_identifier_info: "Es permeten lletres en minúscules (a-z), números i guions.<br />Un cop desat, l'identificador no es pot modificar."
   text_caracters_maximum: "{{count}} caràcters com a màxim."
   text_caracters_minimum: "Com a mínim ha de tenir {{count}} caràcters."
@@ -921,3 +920,6 @@ ca:
   text_are_you_sure_with_children: Delete issue and all child issues?
   field_text: Text field
 
+  field_start_date: Start date
+  label_principal_search: "Search for user or group:"
+  label_user_search: "Search for user:"

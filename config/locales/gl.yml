@@ -290,7 +290,6 @@ gl:
   field_role: Perfil
   field_searchable: Incluír nas búsquedas
   field_spent_on: Data
-  field_start_date: Data de inicio
   field_start_page: Páxina principal
   field_status: Estado
   field_subject: Tema
@@ -798,9 +797,9 @@ gl:
   text_select_project_modules: 'Seleccione os módulos a activar para este proxecto:'
   text_status_changed_by_changeset: "Aplicado nos cambios {{value}}"
   text_subprojects_destroy_warning: "Os proxectos secundarios: {{value}} tamén se eliminarán"
-  text_tip_task_begin_day: tarefa que comeza este día
-  text_tip_task_begin_end_day: tarefa que comeza e remata este día
-  text_tip_task_end_day: tarefa que remata este día
+  text_tip_issue_begin_day: tarefa que comeza este día
+  text_tip_issue_begin_end_day: tarefa que comeza e remata este día
+  text_tip_issue_end_day: tarefa que remata este día
   text_tracker_no_workflow: Non hai ningún fluxo de traballo definido para este tipo de petición
   text_unallowed_characters: Caracteres non permitidos
   text_user_mail_option: "Dos proxectos non seleccionados, só recibirá notificacións sobre elementos monitorizados ou elementos nos que estea involucrado (por exemplo, peticións das que vostede sexa autor ou asignadas a vostede)."
@@ -935,3 +934,6 @@ gl:
   text_are_you_sure_with_children: Delete issue and all child issues?
   field_text: Text field
 
+  field_start_date: Start date
+  label_principal_search: "Search for user or group:"
+  label_user_search: "Search for user:"

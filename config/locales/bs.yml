@@ -252,7 +252,6 @@ bs:
   field_attr_lastname: Atribut za prezime
   field_attr_mail: Atribut za email
   field_onthefly: 'Kreiranje korisnika "On-the-fly"'
-  field_start_date: Početak
   field_done_ratio: % Realizovano
   field_auth_source: Mod za authentifikaciju
   field_hide_mail: Sakrij moju email adresu
@@ -750,9 +749,9 @@ bs:
   text_subprojects_destroy_warning: "Podprojekt(i): {{value}} će takođe biti izbrisani."
   text_workflow_edit: Odaberite ulogu i područje aktivnosti za ispravku toka promjena na aktivnosti
   text_are_you_sure: Da li ste sigurni ?
-  text_tip_task_begin_day: zadatak počinje danas
-  text_tip_task_end_day: zadatak završava danas
-  text_tip_task_begin_end_day: zadatak započinje i završava danas
+  text_tip_issue_begin_day: zadatak počinje danas
+  text_tip_issue_end_day: zadatak završava danas
+  text_tip_issue_begin_end_day: zadatak započinje i završava danas
   text_project_identifier_info: 'Samo mala slova (a-z), brojevi i crtice su dozvoljeni.<br />Nakon snimanja, identifikator se ne može mijenjati.'
   text_caracters_maximum: "maksimum {{count}} karaktera."
   text_caracters_minimum: "Dužina mora biti najmanje {{count}} znakova."
@@ -933,3 +932,6 @@ bs:
   text_are_you_sure_with_children: Delete issue and all child issues?
   field_text: Text field
 
+  field_start_date: Start date
+  label_principal_search: "Search for user or group:"
+  label_user_search: "Search for user:"

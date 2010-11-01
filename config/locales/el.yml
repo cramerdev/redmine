@@ -247,7 +247,6 @@ el:
   field_attr_lastname:  Ιδιότητα επωνύμου
   field_attr_mail: Ιδιότητα email
   field_onthefly: Άμεση δημιουργία χρήστη
-  field_start_date: Εκκίνηση
   field_done_ratio: % επιτεύχθη
   field_auth_source: Τρόπος πιστοποίησης
   field_hide_mail: Απόκρυψη διεύθυνσης email
@@ -761,9 +760,9 @@ el:
   text_subprojects_destroy_warning: "Επίσης το(α) επιμέρους έργο(α): {{value}}  θα διαγραφούν."
   text_workflow_edit: Επιλέξτε ένα ρόλο και έναν ανιχνευτή για να επεξεργαστείτε  τη ροή εργασίας
   text_are_you_sure: Είστε σίγουρος ;
-  text_tip_task_begin_day: καθήκοντα που ξεκινάνε σήμερα
-  text_tip_task_end_day: καθήκοντα που τελειώνουν σήμερα
-  text_tip_task_begin_end_day: καθήκοντα που ξεκινάνε και τελειώνουν σήμερα
+  text_tip_issue_begin_day: καθήκοντα που ξεκινάνε σήμερα
+  text_tip_issue_end_day: καθήκοντα που τελειώνουν σήμερα
+  text_tip_issue_begin_end_day: καθήκοντα που ξεκινάνε και τελειώνουν σήμερα
   text_project_identifier_info: 'Επιτρέπονται μόνο μικρά πεζά γράμματα (a-z), αριθμοί και παύλες. <br /> Μετά την αποθήκευση, το αναγνωριστικό δεν μπορεί να αλλάξει.'
   text_caracters_maximum: "μέγιστος αριθμός {{count}} χαρακτήρες."
   text_caracters_minimum: "Πρέπει να περιέχει τουλάχιστον {{count}} χαρακτήρες."
@@ -919,3 +918,6 @@ el:
   text_are_you_sure_with_children: Delete issue and all child issues?
   field_text: Text field
 
+  field_start_date: Start date
+  label_principal_search: "Search for user or group:"
+  label_user_search: "Search for user:"

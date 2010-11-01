@@ -248,7 +248,6 @@ lv:
   field_attr_lastname: Uzvārda atribūts
   field_attr_mail: "E-pasta atribūts"
   field_onthefly: "Lietotāja izveidošana on-the-fly"
-  field_start_date: Sākuma datums
   field_done_ratio: % padarīti
   field_auth_source: Pilnvarošanas režīms
   field_hide_mail: "Paslēpt manu e-pasta adresi"
@@ -816,9 +815,9 @@ lv:
   text_journal_set_to: "{{label}} iestatīts uz {{value}}"
   text_journal_deleted: "{{label}} dzēsts ({{old}})"
   text_journal_added: "{{label}} {{value}} pievienots"
-  text_tip_task_begin_day: uzdevums sākas šodien
-  text_tip_task_end_day: uzdevums beidzas šodien
-  text_tip_task_begin_end_day: uzdevums sākas un beidzas šodien
+  text_tip_issue_begin_day: uzdevums sākas šodien
+  text_tip_issue_end_day: uzdevums beidzas šodien
+  text_tip_issue_begin_end_day: uzdevums sākas un beidzas šodien
   text_project_identifier_info: 'Tikai mazie burti (a-z), cipari un domuzīmes ir atļauti.<br />Kad saglabāts, identifikators nevar tikt mainīts.'
   text_caracters_maximum: "{{count}} simboli maksimāli."
   text_caracters_minimum: "Jābūt vismaz {{count}} simbolu garumā."
@@ -913,3 +912,6 @@ lv:
   button_edit_associated_wikipage: "Edit associated Wiki page: {{page_title}}"
   text_are_you_sure_with_children: Delete issue and all child issues?
   field_text: Text field
+  field_start_date: Start date
+  label_principal_search: "Search for user or group:"
+  label_user_search: "Search for user:"
