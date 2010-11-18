@@ -56,6 +56,7 @@ Rails::Initializer.run do |config|
   config.gem "holidays"
   config.gem "icalendar"
   config.gem "prawn"
+  config.gem "whenever"
 
   # Load any local configuration that is kept out of source control
   # (e.g. gems, patches).
