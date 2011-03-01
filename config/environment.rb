@@ -51,6 +51,7 @@ Rails::Initializer.run do |config|
   config.action_mailer.perform_deliveries = false
 
   config.gem 'rubytree', :lib => 'tree'
+  config.gem 'coderay', :version => '~>0.9.7'
   
   # Redmine backlogs gems
   config.gem "holidays"

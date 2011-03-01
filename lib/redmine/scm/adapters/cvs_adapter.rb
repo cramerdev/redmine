@@ -229,7 +229,7 @@ module Redmine
         def diff(path, identifier_from, identifier_to=nil)
           logger.debug "<cvs> diff path:'#{path}',identifier_from #{identifier_from}, identifier_to #{identifier_to}"
           path_with_project="#{url}#{with_leading_slash(path)}"
-          cmd = "#{CVS_BIN} -d #{shell_quote root_url} rdiff -u -r#{identifier_to.to_i} -r#{identifier_from.to_i} #{shell_quote path_with_project}"
+          cmd = "#{CVS_BIN} -d #{shell_quote root_url} rdiff -u -r#{identifier_to} -r#{identifier_from} #{shell_quote path_with_project}"
           diff = []
           shellout(cmd) do |io|
             io.each_line do |line|
@@ -249,6 +249,7 @@ module Redmine
           cmd << " -p #{shell_quote path_with_project}"
           cat = nil
           shellout(cmd) do |io|
+            io.binmode
             cat = io.read
           end
           return nil if $? && $?.exitstatus != 0
