@@ -4,8 +4,8 @@
                                      :update => :attributes,
                                      :with => "Form.serialize('issue-form')" %>
 
-<p><%= f.text_field :subject, :size => 80, :required => true %></p>
-                                     
+<p><%= f.text_field :subject, :size => 80, :required => true, :autocomplete => "off" %></p>
+
 <% unless (@issue.new_record? && @issue.parent_issue_id.nil?) || !User.current.allowed_to?(:manage_subtasks, @project) %>
 <p><%= f.text_field :parent_issue_id, :size => 10 %></p>
 <div id="parent_issue_candidates" class="autocomplete"></div>
@@ -23,7 +23,7 @@
 </div>
 
 <div id="attributes" class="attributes">
-	<%= render :partial => 'attributes' %>
+  <%= render :partial => 'attributes' %>
 </div>
 
 <% if @issue.new_record? %>
