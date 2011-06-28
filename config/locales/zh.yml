@@ -14,12 +14,15 @@ zh:
       
     day_names: [星期天, 星期一, 星期二, 星期三, 星期四, 星期五, 星期六]
     abbr_day_names: [日, 一, 二, 三, 四, 五, 六]
-      
+
     # Don't forget the nil at the beginning; there's no such thing as a 0th month
     month_names: [~, 一月, 二月, 三月, 四月, 五月, 六月, 七月, 八月, 九月, 十月, 十一月, 十二月]
     abbr_month_names: [~, 1月, 2月, 3月, 4月, 5月, 6月, 7月, 8月, 9月, 10月, 11月, 12月]
     # Used in date_select and datime_select.
-    order: [ :year, :month, :day ]
+    order:
+      - :year
+      - :month
+      - :day
 
   time:
     formats:
@@ -29,7 +32,7 @@ zh:
       long: "%Y年%b%d日 %H:%M"
     am: "上午"
     pm: "下午"
-      
+
   datetime:
     distance_in_words:
       half_a_minute: "半分钟"
@@ -332,7 +335,6 @@ zh:
   setting_cross_project_issue_relations: 允许不同项目之间的问题关联
   setting_issue_list_default_columns: 问题列表中显示的默认列
   setting_repositories_encodings: 版本库编码
-  setting_commit_logs_encoding: 提交注释的编码
   setting_emails_header: 邮件头
   setting_emails_footer: 邮件签名
   setting_protocol: 协议
@@ -742,7 +744,7 @@ zh:
   label_user_mail_option_none: "不收取任何通知"
   label_user_mail_option_only_my_events: "只收取我跟踪或参与的项目的通知"
   label_user_mail_option_only_assigned: "只收取分配给我的"
-  label_user_mail_option_only_owner: "只收取我是创建者的"
+  label_user_mail_option_only_owner: 只收取由我创建的
   label_user_mail_no_self_notified: "不要发送对我自己提交的修改的通知"
   label_registration_activation_by_email: 通过邮件认证激活帐号
   label_registration_manual_activation: 手动激活帐号
@@ -897,18 +899,20 @@ zh:
   text_assign_time_entries_to_project: 将已上报的工作量提交到项目中
   text_reassign_time_entries: '将已上报的工作量指定到此问题：'
   text_user_wrote: "%{value} 写到："
-  text_enumeration_category_reassign_to: '将它们关联到新的枚举值：'
   text_enumeration_destroy_question: "%{count} 个对象被关联到了这个枚举值。"
-  text_email_delivery_not_configured: "邮件参数尚未配置，因此邮件通知功能已被禁用。\n请在config/email.yml中配置您的SMTP服务器信息并重新启动以使其生效。"
+  text_enumeration_category_reassign_to: '将它们关联到新的枚举值：'
+  text_email_delivery_not_configured: "邮件参数尚未配置，因此邮件通知功能已被禁用。\n请在config/configuration.yml中配置您的SMTP服务器信息并重新启动以使其生效。"
   text_repository_usernames_mapping: "选择或更新与版本库中的用户名对应的Redmine用户。\n版本库中与Redmine中的同名用户将被自动对应。"
   text_diff_truncated: '... 差别内容超过了可显示的最大行数并已被截断'
   text_custom_field_possible_values_info: '每项数值一行'
   text_wiki_page_destroy_question: 此页面有 %{descendants} 个子页面和下级页面。您想进行那种操作？
-  text_wiki_page_reassign_children: 将子页面的上级页面设置为
   text_wiki_page_nullify_children: 将子页面保留为根页面
   text_wiki_page_destroy_children: 删除子页面及其所有下级页面
+  text_wiki_page_reassign_children: 将子页面的上级页面设置为
   text_own_membership_delete_confirmation: 你正在删除你现有的某些或全部权限，如果这样做了你可能将会再也无法编辑该项目了。你确定要继续吗？
-
+  text_zoom_in: Zoom in
+  text_zoom_out: Zoom out
+  
   default_role_manager: 管理人员
   default_role_developer: 开发人员
   default_role_reporter: 报告人员
@@ -936,6 +940,42 @@ zh:
   enumeration_activities: 活动（时间跟踪）
   enumeration_system_activity: 系统活动
 
-  text_zoom_in: Zoom in
-  text_zoom_out: Zoom out
+  field_warn_on_leaving_unsaved: Warn me when leaving a page with unsaved text
+  text_warn_on_leaving_unsaved: The current page contains unsaved text that will be lost if you leave this page.
+  label_my_queries: My custom queries
+  text_journal_changed_no_detail: "%{label} updated"
+  label_news_comment_added: Comment added to a news
+  button_expand_all: Expand all
+  button_collapse_all: Collapse all
+  label_additional_workflow_transitions_for_assignee: Additional transitions allowed when the user is the assignee
+  label_additional_workflow_transitions_for_author: Additional transitions allowed when the user is the author
+  label_bulk_edit_selected_time_entries: Bulk edit selected time entries
+  text_time_entries_destroy_confirmation: Are you sure you want to delete the selected time entr(y/ies)?
+  label_role_anonymous: Anonymous
+  label_role_non_member: Non member
+  label_issue_note_added: Note added
+  label_issue_status_updated: Status updated
+  label_issue_priority_updated: Priority updated
+  label_issues_visibility_own: Issues created by or assigned to the user
+  field_issues_visibility: Issues visibility
+  label_issues_visibility_all: All issues
+  permission_set_own_issues_private: Set own issues public or private
+  field_is_private: Private
+  permission_set_issues_private: Set issues public or private
+  label_issues_visibility_public: All non private issues
+  text_issues_destroy_descendants_confirmation: This will also delete %{count} subtask(s).
 
+  field_commit_logs_encoding: 提交注释的编码
+  field_scm_path_encoding: Path encoding
+  text_scm_path_encoding_note: "Default: UTF-8"
+  field_path_to_repository: Path to repository
+  field_root_directory: Root directory
+  field_cvs_module: Module
+  field_cvsroot: CVSROOT
+  text_git_repository_note: Bare and local repository (e.g. /gitrepo, c:\gitrepo)
+  text_mercurial_repository_note: Local repository (e.g. /hgrepo, c:\hgrepo)
+  text_scm_command: Command
+  text_scm_command_version: Version
+  label_git_report_last_commit: Report last commit for files and directories
+  text_scm_config: You can configure your scm commands in config/configuration.yml. Please restart the application after editing it.
+  text_scm_command_not_available: Scm command is not available. Please check settings on the administration panel.

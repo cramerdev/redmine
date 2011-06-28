@@ -3,6 +3,10 @@ syntax: glob
 .project
 .loadpath
 config/additional_environment.rb
+<<<<<<< HEAD
+=======
+config/configuration.yml
+>>>>>>> 15228c99586c9fb8633032028c32f1278179d422
 config/database.yml
 config/email.yml
 config/initializers/session_store.rb
@@ -11,6 +15,11 @@ db/*.db
 db/*.sqlite3
 db/schema.rb
 files/*
+<<<<<<< HEAD
+=======
+lib/redmine/scm/adapters/mercurial/redminehelper.pyc
+lib/redmine/scm/adapters/mercurial/redminehelper.pyo
+>>>>>>> 15228c99586c9fb8633032028c32f1278179d422
 log/*.log*
 log/mongrel_debug
 public/dispatch.*
@@ -22,3 +31,8 @@ tmp/sockets/*
 tmp/test/*
 vendor/rails
 *.rbc
+<<<<<<< HEAD
+=======
+.svn/
+.git/
+>>>>>>> 15228c99586c9fb8633032028c32f1278179d422
