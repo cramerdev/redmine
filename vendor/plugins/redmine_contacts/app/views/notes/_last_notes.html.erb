@@ -1,0 +1,6 @@
+<h3><%= l(:label_last_notes) %></h3>
+<div id="notes">
+<% last_notes.each do |note| %>   
+	<%= render :partial => 'notes/note_data', :locals => {:limit => 100}, :object => note %> 
+<% end %>
+</div>

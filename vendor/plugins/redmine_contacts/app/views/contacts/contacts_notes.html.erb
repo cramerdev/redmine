@@ -1,0 +1,53 @@
+    <div class="filters">  
+<% if !@tag %>
+
+			<h2> 
+			<span class="scope_title">     
+			<%= l(:label_contact_note_plural) %> 
+			</span>  
+			<span class="live_search">
+			 	<%= text_field_tag(:search_note, params[:search_note], :autocomplete => "off", :size => "40", :class => "live_search_field" ) %>
+
+
+				<%= observe_field("search_note",  
+					:frequency => 1, 
+				    :update => 'contacts_notes', 
+					:url => {:controller => 'contacts',  :action => 'contacts_notes', :project_id => @project }, 
+				    :with => "search_note") %>
+
+
+			</span>
+			</h2>           
+
+    
+<% else %>
+	<h2 class="scope_title"><%= "#{l(:label_contact_tag)}(#{@notes_pages.item_count}): #{render(:partial => "tags_item", :collection => @tag, :locals => {:is_note => false} )}"  %> </h2>
+<% end %>
+</div>  
+
+<div id="contacts_notes">  
+	<%= render :partial => 'notes/notes_list' %>
+</div>     
+
+<% content_for(:header_tags) do %>
+  <%= stylesheet_link_tag :contacts, :plugin => 'redmine_contacts' %>
+<% end %>
+
+<% content_for :sidebar do %>   
+   	<%= render :partial => 'common/sidebar' %>
+        
+	
+	<h3><%= l(:label_tags_plural) %></h3>
+	<div id="tags">
+		<%= render :partial => "tags_item", :collection => @tags, :locals => {:is_note => true, :multiple => false} %>
+	</div>   
+	
+	<h3><%= l(:label_recently_viewed) %></h3>
+	<div id="recently_viewed">
+		<%= render :partial => 'common/related_contacts', :object => RecentlyViewed.last(5) %>        
+	</div>      
+  	
+<% end %>
+
+
+

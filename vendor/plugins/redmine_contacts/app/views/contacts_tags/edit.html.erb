@@ -1,0 +1,29 @@
+<h2><%= link_to l(:contacts_title), :controller => 'settings', :action => 'plugin', :id => 'contacts' %> &#187; <%=h (l(:label_tag) + ": " + @tag.name) %></h2>
+
+<% form_tag({:action => 'update', :id => @tag}, :class => "tabular") do %>
+  <%= error_messages_for 'tag' %>
+<div class="box">
+<!--[form:optvalue]-->
+<p><label for="tag_name"><%=l(:field_name)%></label>
+<%= text_field 'tag', 'name'  %></p>
+
+<p><label for="tag_color"><%=l(:field_color)%></label>
+<%= color_picker("tag", @tag.color_name) %> 
+<!--[eoform:optvalue]-->
+   
+
+<!-- var picker = new ColourPicker("picker", "trigger"); -->
+
+</div>
+
+  <%= submit_tag l(:button_save) %>
+<% end %>
+
+<% form_tag({:action => 'destroy', :id => @tag}) do %>
+  <%= submit_tag l(:button_delete) %>
+<% end %>    
+
+<% content_for :header_tags do %>
+	<%= javascript_include_tag :contacts, :plugin => 'redmine_contacts'  %>
+	<%= stylesheet_link_tag :contacts, :plugin => 'redmine_contacts' %>
+<% end %>

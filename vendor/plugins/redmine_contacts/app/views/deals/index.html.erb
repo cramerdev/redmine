@@ -1,0 +1,53 @@
+<% content_for(:header_tags) do %>
+  <%= stylesheet_link_tag :contacts, :plugin => 'redmine_contacts' %>
+<% end %>
+
+<% content_for :sidebar do %>   
+	<%= render :partial => 'common/sidebar' %>    
+	
+	<%= render :partial => 'notes/last_notes', :object => @last_notes %>        
+	
+	<%= render :partial => 'common/recently_viewed' %>
+
+<% end %>
+
+<div class="contextual">
+  <%= link_to_if_authorized l(:label_deal_new), {:controller => 'deals', :action => 'new', :project_id => @project}, :class => 'icon icon-add' %>
+</div>
+
+<h2><%=  l(:label_deal_plural) %></h2>     
+
+<% unless false %>
+	<% form_tag(params, :id => "query_form") do %> 
+	<%= hidden_field_tag('project_id', @project.to_param) if @project %> 
+	<fieldset id="filters" class="collapsible <%= 'collapsed' if params[:deal_status_id].blank? %>">
+		<legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
+		<div style="<%= 'display: none;' if params[:deal_status_id].blank? %>">  
+			<%= label_tag l(:field_contact_status) + " "  %>
+			<%= select_tag :deal_status_id, deal_status_options_for_select(params[:deal_status_id]) %>
+		</div>
+	</fieldset> 
+	<p class="buttons hide-when-print">
+
+		<%= link_to_remote l(:button_apply), 
+	                       { :url => {},
+	                         :update => "deal_list",
+							 :with => "Form.serialize('query_form')"    
+	                       }, :class => 'icon icon-checked' %>
+                       
+	    <%= link_to_remote l(:button_clear),
+	                       { :url => { :project_id => @project },
+	                         :method => :get,
+	                         :update => "deal_list",
+	                       }, :class => 'icon icon-reload'  %>    
+    </p>                                                                    
+	<% end %>  
+<% end %>
+                                                                                        
+
+<div id="deal_list">  
+	<%= render :partial => 'list' %>
+</div>
+
+<% html_title l(:label_deal_plural) %>   
+
