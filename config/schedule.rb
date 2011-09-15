@@ -2,6 +2,9 @@
 # something like `whenever -w PATH=$PATH`
 env :PATH, ENV['PATH']
 
+# Redmine has problems with certain Rake versions
+job_type :rake, 'cd :path && RAILS_ENV=:environment rake _0.8.7_ :task --silent :output'
+
 # Load the imap_addresses from the config and set them all up to be checked
 # periodically
 (((YAML.load_file('config/configuration.yml') || {})['production'] || {})['imap_addresses'] || []).each do |a|
