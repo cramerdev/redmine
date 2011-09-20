@@ -75,7 +75,7 @@ Redmine::Plugin.register :contacts do
   
   menu :top_menu, :contacts, {:controller => 'contacts', :action => 'index'}, :caption => :contacts_title
   
-  activity_provider :contacts, :default => false, :class_name => ['Note']  
+  activity_provider :contacts, :class_name => ['Note']
 
   # activity_provider :contacts, :default => false   
 end
