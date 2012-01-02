@@ -60,6 +60,7 @@ class MailHandler < ActionMailer::Base
       case @@handler_options[:unknown_user]
       when 'accept'
         @user = User.anonymous
+        email.body = "\nFrom: #{sender_email}\n\n" + email.body
       when 'create'
         @user = MailHandler.create_user_from_email(email)
         if @user
