@@ -1,14 +1,12 @@
 <% content_for(:header_tags) do %>
+  <%= stylesheet_link_tag :contacts_sidebar, :plugin => 'redmine_contacts' %>
   <%= stylesheet_link_tag :contacts, :plugin => 'redmine_contacts' %>
 <% end %>
 
 <% content_for :sidebar do %>          
 	<%= render :partial => 'common/sidebar' %>   
 	
-	<h3><%= l(:label_recently_viewed) %></h3>
-	<div id="recently_viewed">
-		<%= render :partial => 'common/related_contacts', :object => RecentlyViewed.last(5) %>        
-	</div>      
+	<%= render :partial => 'common/recently_viewed' %>
   	
 <% end %>
 

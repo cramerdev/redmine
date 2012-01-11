@@ -6,6 +6,8 @@ class ContactsTasksController < ApplicationController
   before_filter :find_contact, :except => [:index, :add, :close]    
   before_filter :find_issue, :except => [:index, :new]
   
+  helper :contacts
+  
   def index   
     cond = "(1=1)"
     # cond = "issues.assigned_to_id = #{User.current.id}"
@@ -14,7 +16,7 @@ class ContactsTasksController < ApplicationController
     
     @contacts_issues = Issue.visible.find(:all, 
                                           :joins => "INNER JOIN contacts_issues ON issues.id = contacts_issues.issue_id", 
-                                          :group => :issue_id,
+                                          # :group => :issue_id,
                                           :conditions => cond,
                                           :order => "issues.due_date")    
     @users = assigned_to_users                                      
@@ -109,7 +111,7 @@ class ContactsTasksController < ApplicationController
     if project
       user_values += project.users.sort.collect{|s| [s.name, s.id.to_s] }
     else
-      project_ids = Project.all(:conditions => Project.visible_by(User.current)).collect(&:id)
+      project_ids = Project.all(:conditions => Project.visible_condition(User.current)).collect(&:id)
       if project_ids.any?
         # members of the user's projects
         user_values += User.active.find(:all, :conditions => ["#{User.table_name}.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (?))", project_ids]).sort.collect{|s| [s.name, s.id.to_s] }

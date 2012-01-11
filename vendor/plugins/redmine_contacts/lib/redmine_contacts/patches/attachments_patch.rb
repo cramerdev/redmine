@@ -33,7 +33,8 @@ module RedmineContacts
 
             send_file(thumb_file_name, :disposition => 'inline', :type => 'image/png', :filename => "#{@attachment.filename}.png") 
           end  
-        end  
+        end 
+        
 
       end
   
@@ -52,7 +53,15 @@ module RedmineContacts
       end
       
       module InstanceMethods    
-
+        
+        def is_thumbnailable?
+          (self.is_pdf? && self.filesize < 600.kilobytes) || self.image?
+        end
+        
+        def is_pdf?
+          self.filename =~ /\.(pdf)$/i
+        end
+         
         def delete_thumbnails  
           Dir.glob(self.storage_path + "/#{self.digest}.thumb.*").map {|f| File.delete(f)}
         end
@@ -71,9 +80,6 @@ module RedmineContacts
         base.class_eval do 
           unloadable   
           after_destroy :delete_thumbnails 
-          
-          cattr_accessor :thumbnails_path
-          @@thumbnails_path = "#{RAILS_ROOT}/files/thumbnails"
           
         end  
       end  

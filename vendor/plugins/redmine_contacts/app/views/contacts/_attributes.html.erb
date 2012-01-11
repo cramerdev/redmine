@@ -1,17 +1,10 @@
 <div id="attributes">
 
-
-<%- if Gem.available?('vpim') -%>
-
-<div class="contextual">
-	<%= link_to 'vCard', params.merge({:format => 'vcf'}), :class => 'vcf' %>
-</div>               
-<%- end -%>
 <h3><%= if !@contact.is_company then l(:label_contact) else l(:label_company) end %></h3>  
 
 <table class="attributes vcard">
 	<tr>
-		<th class = "name"><%= l(:field_contact_name) %>:</th><td class="name fn <%= "org" if @contact.is_company %>"><%= h @contact.name %></td>
+		<th class = "name"><%= l(:field_contact_name) %>:</th><td class="name fn <%= "org" if @contact.is_company %>"><%= h @contact.name(:firstname_middlename_lastname) %></td>
 	</tr>  
 	<% if !@contact.job_title.blank? %>
 	<tr> <th class = "job_title"><%= !@contact.is_company ? l(:field_contact_job_title) : l(:field_company_field) %>:</th><td class="job_title title"><%= h @contact.job_title %></td></tr>
@@ -23,24 +16,24 @@
 		<th class = "address"><%= l(:field_contact_address) %>:</th>
 		<td class="address adr"><%= h @contact.address %>
 				<% if !@contact.address.blank? %>
-					<br>
-					<%= link_to l(:label_show_on_map), "http://maps.google.com/maps?f=q&q=#{h @contact.address}+(#{h @contact.name})&ie=UTF8&om=1"%>
+					<br>  
+					<%= link_to l(:label_show_on_map), "http://maps.google.com/maps?f=q&q=#{h @contact.address.gsub("\r\n"," ").gsub("\n"," ")}+(#{h @contact.name})&ie=UTF8&om=1"%>
 				<% end %>
 		</td>
 		</tr>
 	<tr class = "tel">
 		<th class = "phone"><%= l(:field_contact_phone) %>:</th>
-		<td class="phone value"> 
+		<td class = "phones"> 
 		<% @contact.phones.each do |phone| %>   
-			<%= h phone %> <br>
+			<span  class="value"><%= h phone %> <br></span>
 		 <% end %>   
 		</td>
 	</tr>
-	<tr>
-		<th class = "email"><%= l(:field_contact_email) %>:</th>
-		<td class="email value">
+	<tr class = "emails">
+		<th><%= l(:field_contact_email) %>:</th>
+		<td>
 			<% @contact.emails.each do |email| %>   
-				<%= mail_to email %> <br>
+				<span class="email"><%= mail_to email %> <br></span>
 			 <% end %>   
 		</td>
 	</tr>
@@ -52,7 +45,8 @@
 	<% end %>
 	<% if !@contact.birthday.blank? %>
 	<tr> <th class = "birthday"><%= l(:field_birthday) %>:</th><td class="birthday bday"><%= format_date(@contact.birthday) %></td> </tr>
-	<% end %>
+	<% end %>  
+	
 </table>
 
 </div>            

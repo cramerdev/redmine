@@ -53,7 +53,7 @@ module NotesHelper
                               :id => att_file, 
                               :size => size)             
       image_url = Object.const_defined?(:Magick) ? thumbnail_url : attachment_url
-      s << link_to(image_tag(image_url, options), attachment_url) if (att_file.image? && (att_file.filesize < max_file_size || Object.const_defined?(:Magick)))
+      s << link_to(image_tag(image_url, options), attachment_url) if (att_file.is_thumbnailable? && (att_file.filesize < max_file_size || Object.const_defined?(:Magick)))
     end       
     s
   end 

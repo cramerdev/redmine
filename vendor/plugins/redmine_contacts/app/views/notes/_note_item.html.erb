@@ -21,7 +21,7 @@
 					<%= link_to_source(note_item.source) + "," if show_info %> 
 					<%= authoring note_item.created_on, note_item.author %> 
 					<%= link_to('&para;', {:controller => 'notes', :action => 'show', :project_id => @project, :note_id => note_item}, :title => l(:button_show), :class => "wiki-anchor") %>
-				</h4>
+				</h4> 
 				<div class="wiki">   
 					<%= note_content(note_item) %>
 					<%= auto_thumbnails(note_item) %> 

@@ -2,12 +2,15 @@ class NotesController < ApplicationController
   unloadable
   
   # before_filter :find_model_object
-  before_filter :find_project_by_project_id
+  before_filter :find_project_by_project_id, :except => :show    
+  before_filter :find_optional_project, :only => :show
   before_filter :find_note, :only => [:show, :edit, :update, :destroy]    
   before_filter :authorize, :except => [:index]
 
   helper :attachments
   helper :notes  
+  helper :contacts
+  helper :custom_fields
   
   def show   
     respond_to do |format|
@@ -80,7 +83,8 @@ class NotesController < ApplicationController
   private
   
   def find_note
-    @note = Note.find(params[:note_id])  
+    @note = Note.find(params[:note_id])
+    @project ||= @note.project  
   rescue ActiveRecord::RecordNotFound
     render_404
   end

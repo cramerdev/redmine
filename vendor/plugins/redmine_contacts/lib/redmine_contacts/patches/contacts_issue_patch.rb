@@ -23,7 +23,6 @@ module RedmineContacts
         base.class_eval do    
           unloadable # Send unloadable so it will not be unloaded in development
           has_and_belongs_to_many :contacts, :order => "last_name, first_name", :uniq => true  
-          has_many :deals, :dependent => :delete_all 
         end  
       end  
     end  
@@ -31,11 +30,15 @@ module RedmineContacts
     module TagPatch   
       module InstanceMethods    
         def color_name
-          return "#" + "%03x" % self.color unless self.color.nil?
+          return "#" + "%06x" % self.color unless self.color.nil?
+        end
+
+        def color_name=(clr)
+          self.color = clr.from(1).hex
         end
 
         def assign_color
-          self.color = (rand * 0xfff)  
+          self.color = (rand * 0xffffff)  
         end
       end
   

@@ -4,6 +4,8 @@ class ContactsProjectsController < ApplicationController
   before_filter :find_project_by_project_id, :authorize 
   before_filter :find_contact, :except => [:index, :close]    
   
+  helper :contacts
+  
   def add
     @show_form = "true"          
     # find_contact

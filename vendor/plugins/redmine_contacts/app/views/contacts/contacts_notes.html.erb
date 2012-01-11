@@ -1,28 +1,62 @@
-    <div class="filters">  
+<div class="filters">  
 <% if !@tag %>
-
-			<h2> 
-			<span class="scope_title">     
+  
+	<% form_tag(params, :id => "query_form") do %> 
+	<%= hidden_field_tag('project_id', @project.to_param) if @project %>   
+	<h2> 
+		<span class="scope_title">     
 			<%= l(:label_contact_note_plural) %> 
-			</span>  
-			<span class="live_search">
-			 	<%= text_field_tag(:search_note, params[:search_note], :autocomplete => "off", :size => "40", :class => "live_search_field" ) %>
+		</span>  
+		<span class="live_search">
+			<%= label_tag :search_note, l(:label_search), :id => "search_overlabel" %>
+
+			<%= text_field_tag(:search_note, params[:search_note], :autocomplete => "off", :size => "35", :class => "live_search_field", :onfocus => "Element.hide('search_overlabel'); return false;", :onblur => "if (this.value == '') {Element.show('search_overlabel');}" ) %>           
+
+			<%= observe_field("search_note",  
+			:frequency => 1, 
+			:update => 'contacts_notes', 
+			:url => {:controller => 'contacts',  :action => 'contacts_notes', :project_id => @project }, 
+			:with => "Form.serialize('query_form')") %>
 
 
-				<%= observe_field("search_note",  
-					:frequency => 1, 
-				    :update => 'contacts_notes', 
-					:url => {:controller => 'contacts',  :action => 'contacts_notes', :project_id => @project }, 
-				    :with => "search_note") %>
-
-
-			</span>
-			</h2>           
-
+		</span>
+	</h2> 
     
+	   <% if false %>
+		<fieldset id="filters" class="collapsible collapsed">
+			<legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
+			<div style="display: none;">  
+				<p>
+	    			<%= label_tag l(:label_author) + " "  %> 
+					<%= select_tag :note_author_id, options_for_select(Note.available_authors(@project).collect{|u| [u.name, u.id]}.insert(0, [""]),  params[:note_author_id]) %>
+				</p>    
+
+			</div>
+		</fieldset> 
+		<p class="buttons hide-when-print">
+
+			<%= link_to_remote l(:button_apply), 
+			{ :url => {},
+			:update => "deal_list",
+			:with => "Form.serialize('query_form')"    
+			}, :class => 'icon icon-checked' %>
+
+			<%= link_to l(:button_clear),
+			{:project_id => @project },
+			:method => :get,
+			:update => "deal_list",
+			:class => 'icon icon-reload'  %>    
+		</p>  
+	
+		<% end %>   
+		                                                               
+	<% end %>  
+
+
+
 <% else %>
-	<h2 class="scope_title"><%= "#{l(:label_contact_tag)}(#{@notes_pages.item_count}): #{render(:partial => "tags_item", :collection => @tag, :locals => {:is_note => false} )}"  %> </h2>
-<% end %>
+<h2 class="scope_title"><%= "#{l(:label_contact_tag)}(#{@notes_pages.item_count}): #{render(:partial => "tags_item", :collection => @tag, :locals => {:is_note => false} )}"  %> </h2>
+<% end %> 
 </div>  
 
 <div id="contacts_notes">  
@@ -42,10 +76,7 @@
 		<%= render :partial => "tags_item", :collection => @tags, :locals => {:is_note => true, :multiple => false} %>
 	</div>   
 	
-	<h3><%= l(:label_recently_viewed) %></h3>
-	<div id="recently_viewed">
-		<%= render :partial => 'common/related_contacts', :object => RecentlyViewed.last(5) %>        
-	</div>      
+	<%= render :partial => 'common/recently_viewed' %>
   	
 <% end %>
 

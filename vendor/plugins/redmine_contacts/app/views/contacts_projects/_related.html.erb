@@ -19,7 +19,7 @@
                         		:project_id => @project},
        	             :method => :post,
       	             :html => {:id => 'add-project-form'}) do |f| %>
-		<p><%= select_tag :new_project_id, project_tree_options_for_select(Project.visible.find(:all, :order => 'lft')), :prompt => "--- #{l(:actionview_instancetag_blank_option)} ---" %>
+		<p><%= select_tag :new_project_id, project_tree_options_for_select(Project.has_module(:contacts_module).visible.find(:all, :order => 'lft')), :prompt => "--- #{l(:actionview_instancetag_blank_option)} ---" %>
 
 		<%= submit_tag l(:button_add) %>
 		<%= toggle_link l(:button_cancel), 'add-project-form'%></p>

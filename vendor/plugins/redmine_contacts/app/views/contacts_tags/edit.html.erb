@@ -1,6 +1,6 @@
-<h2><%= link_to l(:contacts_title), :controller => 'settings', :action => 'plugin', :id => 'contacts' %> &#187; <%=h (l(:label_tag) + ": " + @tag.name) %></h2>
+<h2><%= link_to l(:contacts_title), :controller => 'settings', :action => 'plugin', :id => 'contacts', :tab => 'tags' %> &#187; <%=h (l(:label_tag) + ": " + @tag.name) %></h2>
 
-<% form_tag({:action => 'update', :id => @tag}, :class => "tabular") do %>
+<% form_tag({:action => 'update', :id => @tag, :tab => 'tags' }, :class => "tabular") do %>
   <%= error_messages_for 'tag' %>
 <div class="box">
 <!--[form:optvalue]-->
@@ -8,18 +8,21 @@
 <%= text_field 'tag', 'name'  %></p>
 
 <p><label for="tag_color"><%=l(:field_color)%></label>
-<%= color_picker("tag", @tag.color_name) %> 
+<%= text_field 'tag', 'color_name', :class => "colorpicker"  %>
 <!--[eoform:optvalue]-->
+</p> 
    
-
-<!-- var picker = new ColourPicker("picker", "trigger"); -->
+<script>
+// var picker = new ColourPicker("picker", "trigger");
+$$('.colorpicker').each(function(el){var p = new ColorPicker(el)});
+</script>  
 
 </div>
 
   <%= submit_tag l(:button_save) %>
 <% end %>
 
-<% form_tag({:action => 'destroy', :id => @tag}) do %>
+<% form_tag({:action => 'destroy', :id => @tag, :tab => 'tags' }) do %>
   <%= submit_tag l(:button_delete) %>
 <% end %>    
 

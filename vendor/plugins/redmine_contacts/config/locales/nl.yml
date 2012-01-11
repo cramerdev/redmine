@@ -51,11 +51,8 @@ nl:
   label_deal_new: Nieuwe deal
   label_deal_edit_information: Deal bewerken
   label_deal_change_status: Status veranderen
-  label_deal_pending: Uitstaand
-  label_deal_won: Verkregen
-  label_deal_lost: Verloren
-
-
+  label_statistics: Statistics
+  
   field_note_date: Notitiedatum
 
   field_deal_name: Naam
@@ -103,4 +100,28 @@ nl:
   permission_delete_deals: Deals verwijderen   
   permission_add_notes: Notities toevoegen
   permission_delete_notes: Delete notes      
-  permission_delete_own_notes: Delete own notes  
+  permission_delete_own_notes: Delete own notes     
+  
+  # 2.0.0   
+  label_deal_category: Deal category   
+  label_deal_category_plural: Deals categories   
+  label_deal_category_new: New category
+  text_deal_category_destroy_assignments: Remove category assignments
+  text_deal_category_destroy_question: "Some deals (%{count}) are assigned to this category. What do you want to do?"
+  text_deal_category_reassign_to: Reassign deals to this category 
+  text_deals_destroy_confirmation: 'Are you sure you want to delete the selected deal(s)?'  
+  label_deal_status_plural: Deal statuses 
+  label_deal_status: Deal status 
+  field_deal_status_is_closed: Closed 
+  label_deal_status_new: New     
+  permission_manage_contacts: Enumerations    
+  label_sale_funel: Sales funnel
+  label_period: Perion
+  label_count: Count 
+  
+  #2.0.1
+  label_user_format: Contact name format 
+  label_my_contact_plural: Contacts assigned to me
+  label_my_deal_plural: Open deals assigned to me 
+  label_contact_view_all: View all contacts  
+  label_deal_view_all: View all deals  

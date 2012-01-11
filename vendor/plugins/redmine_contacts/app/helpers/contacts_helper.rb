@@ -1,9 +1,13 @@
 module ContactsHelper
   
+  def authorized_for_permission?(permission, project, global = false)
+    User.current.allowed_to?(permission, project, :global => global)
+  end  
+  
   def contacts_filters_for_select(selected)    
     selected ||= "" 
-    options_for_select([[contacts_filter_name('0'), '0'], 
-                        [contacts_filter_name('1'), '1'], 
+    options_for_select([[contacts_filter_name('0'), ActiveRecord::Base.connection.quoted_false.gsub(/'/, '')], 
+                        [contacts_filter_name('1'), ActiveRecord::Base.connection.quoted_true.gsub(/'/, '')], 
                         [contacts_filter_name(''), ''], 
                         ['--------'], 
                         [l(:button_cancel), '-1']], :selected => selected, :disabled => "--------")
@@ -50,7 +54,7 @@ module ContactsHelper
     
     if paginator.current.next
       html << ' ' + link_to_remote_list_update((l(:label_next) + ' &#187;'), url_param.merge(page_param => paginator.current.next))
-    end
+    end      
     
     html
     
@@ -58,14 +62,19 @@ module ContactsHelper
   
   def contact_url(contact)      
     return {:controller => 'contacts', :action => 'show', :project_id => @project, :id => contact.id }
-  end
+  end  
+  
+  def deal_url(deal)
+      return {:controller => 'deals', :action => 'show', :id => deal.id }
+  end  
 
-  def note_source_url(note_source) 
-    return {:controller => note_source.class.name.pluralize.downcase, :action => 'show', :project_id => @project, :id => note_source.id }
+  def note_source_url(note_source)
+    polymorphic_url(note_source)
+    # return {:controller => note_source.class.name.pluralize.downcase, :action => 'show', :project_id => @project, :id => note_source.id }
   end
        
-  def link_to_source(note_source) 
-    return link_to note_source.name, note_source_url(note_source)
+  def link_to_source(note_source, options={}) 
+    return link_to note_source.name, note_source_url(note_source), options
   end
 
   def avatar_to(obj, options = { })  
@@ -74,9 +83,9 @@ module ContactsHelper
     options[:size] = options[:size] + "x" + options[:size] 
     options[:class] = "gravatar" 
     
-    avatar = obj.avatar # unless Rails::env == "development"
+    avatar = obj.avatar unless Rails::env == "development"
     
-    if avatar && FileTest.exists?(avatar.diskfile) && avatar.image? then  # and obj.visible?  
+    if avatar && FileTest.exists?(avatar.diskfile) && avatar.is_thumbnailable? then  # and obj.visible?  
       avatar_url = url_for :only_path => false, :controller => 'attachments', :action => 'download', :id => avatar, :filename => avatar.filename
       thumbnail_url = url_for(:only_path => false, 
                               :controller => 'attachments', 
@@ -102,6 +111,7 @@ module ContactsHelper
      
     if !image && Setting.plugin_contacts[:use_gravatar] && obj.class == Contact
       options[:default] = "#{request.protocol}#{request.host_with_port}" + plugins_images   
+      options.merge!({:ssl => (defined?(request) && request.ssl?)})
       image = gravatar(obj.emails.first.downcase, options) rescue nil 
     end 
     
@@ -162,14 +172,13 @@ module ContactsHelper
 
       maker.add_addr do |addr|
         addr.preferred = true
-        addr.street = contact.address
+        addr.street = contact.address.gsub("\r\n"," ").gsub("\n"," ") 
       end
       
       maker.title = contact.job_title
       maker.org = contact.company   
       maker.birthday = contact.birthday.to_date unless contact.birthday.blank?
-      
-      maker.add_note(contact.background.gsub("\r", '').gsub("\n", ''))
+      maker.add_note(contact.background.gsub("\r\n"," ").gsub("\n", ' '))
        
       maker.add_url(contact.website)
 
@@ -200,7 +209,91 @@ module ContactsHelper
       options.merge( { :with => with }))
     end
     ret
+  end    
+
+  def contacts_to_vcard(contacts)    
+    contacts.map{|c| contact_to_vcard(c) }.join("\r\n")
   end
+  
+  # Renders a HTML/CSS tooltip
+  #
+  # To use, a trigger div is needed.  This is a div with the class of "tooltip"
+  # that contains this method wrapped in a span with the class of "tip"
+  #
+  #    <div class="tooltip"><%= link_to_issue(issue) %>
+  #      <span class="tip"><%= render_issue_tooltip(issue) %></span>
+  #    </div>
+  #
+  def render_contact_tooltip(contact, options={})
+    @cached_label_company ||= l(:field_contact_company)
+    @cached_label_job_title = contact.is_company ? l(:field_company_field) : l(:field_contact_job_title)
+    @cached_label_phone ||= l(:field_contact_phone)
+    @cached_label_email ||= l(:field_contact_email)
     
+    emails = contact.emails.any? ? contact.emails.map{|email| "<span class=\"email\" style=\"white-space: nowrap;\">#{mail_to email}</span>"}.join(', ') : ''
+    phones = contact.phones.any? ? contact.phones.map{|phone| "<span class=\"phone\" style=\"white-space: nowrap;\">#{phone}</span>"}.join(', ') : ''
+    
+    s = link_to_contact(contact, options) + "<br /><br />"
+    s <<  "<strong>#{@cached_label_job_title}</strong>: #{contact.job_title}<br />" unless contact.job_title.blank?
+    s <<  "<strong>#{@cached_label_company}</strong>: #{link_to(contact.contact_company.name, {:controller => 'contacts', :action => 'show', :id => contact.contact_company.id })}<br />" if !contact.contact_company.blank? && !contact.is_company
+    s <<  "<strong>#{@cached_label_email}</strong>: #{emails}<br />" if contact.emails.any?
+    s <<  "<strong>#{@cached_label_phone}</strong>: #{phones}<br />" if contact.phones.any?
+    s
+  end
+  
+  
+  def link_to_contact(contact, options={})
+    s = ''
+    html_options = {}
+    html_options = {:class => 'icon icon-vcard'} if options[:icon] == true
+    s << avatar_to(contact, :size => "16") if options[:avatar] == true
+ 		s << link_to_source(contact, html_options)
+
+ 		s << "(#{contact.job_title}) " if (options[:job_title] == true) && !contact.job_title.blank?
+		s << " #{l(:label_at_company)} " if (options[:job_title] == true) && !(contact.job_title.blank? or contact.company.blank?) 
+		if (options[:company] == true) and contact.contact_company
+			s << link_to(contact.contact_company.name, {:controller => 'contacts', :action => 'show', :id => contact.contact_company.id })
+		else
+			h contact.company
+		end
+ 		s << "(#{l(:field_contact_tag_names)}: #{contact.tag_list.join(', ')}) " if (options[:tag_list] == true) && !contact.tag_list.blank?
+    s
+  end
+  
+  def retrieve_query
+    # session[:]
+    # if !params[:query_id].blank?
+    #   cond = "project_id IS NULL"
+    #   cond << " OR project_id = #{@project.id}" if @project
+    #   @query = Query.find(params[:query_id], :conditions => cond)
+    #   raise ::Unauthorized unless @query.visible?
+    #   @query.project = @project
+    #   session[:query] = {:id => @query.id, :project_id => @query.project_id}
+    #   sort_clear
+    # else
+    #   if api_request? || params[:set_filter] || session[:query].nil? || session[:query][:project_id] != (@project ? @project.id : nil)
+    #     # Give it a name, required to be valid
+    #     @query = Query.new(:name => "_")
+    #     @query.project = @project
+    #     if params[:fields] || params[:f]
+    #       @query.filters = {}
+    #       @query.add_filters(params[:fields] || params[:f], params[:operators] || params[:op], params[:values] || params[:v])
+    #     else
+    #       @query.available_filters.keys.each do |field|
+    #         @query.add_short_filter(field, params[field]) if params[field]
+    #       end
+    #     end
+    #     @query.group_by = params[:group_by]
+    #     @query.column_names = params[:c] || (params[:query] && params[:query][:column_names])
+    #     session[:query] = {:project_id => @query.project_id, :filters => @query.filters, :group_by => @query.group_by, :column_names => @query.column_names}
+    #   else
+    #     @query = Query.find_by_id(session[:query][:id]) if session[:query][:id]
+    #     @query ||= Query.new(:name => "_", :project => @project, :filters => session[:query][:filters], :group_by => session[:query][:group_by], :column_names => session[:query][:column_names])
+    #     @query.project = @project
+    #   end
+    # end
+  end
+  
+  
   
 end

@@ -4,9 +4,12 @@
 <span id="new_note_form_subject" >
 	<p>
 	  <%= f.text_field :created_on, :size => 15, :value => Date.current %><%= calendar_for "note_created_on" %>
-	</p>
+	</p>  
 </span>             
 <% end %>
+
+
+
 <%= f.text_area :content, :rows => 6, :class => 'wiki-edit' %>  
 
 <% if !ajax_form %>

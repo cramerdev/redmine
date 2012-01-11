@@ -2,20 +2,34 @@ div.contact {background:#f4e9f2; padding:6px; margin-bottom:6px;border: 1px soli
 div.deal {background:#edfff2; padding:6px; margin-bottom:6px;border: 1px solid #d7d7d7;}
 form#add_task_form {background:#ffffff; display: block; padding:6px; margin-bottom:6px;border: 1px solid #d7d7d7; width: 92%;}     
 
-#sidebar{ float: right; width: 30%; position: relative; z-index: 9; min-height: 600px; padding: 0; margin: 0;}
-* html #sidebar{ width: 30%; }
-#sidebar h3{ font-size: 14px; margin-top:14px; color: #666;  }
-#sidebar hr{ width: 100%; margin: 0 auto; height: 1px; background: #ccc; border: 0; }
-* html #sidebar hr{ width: 95%; position: relative; left: -6px; color: #ccc; }
+/********************/
+/* CONTACT ISSUES		*/
+/********************/
 
-#content { width: 67%; background-color: #fff; margin: 0px; border-right: 1px solid #ddd; padding: 6px 10px 10px 10px; z-index: 10; }
-* html #content{ width: 67%; padding-left: 0; margin-top: 0px; padding: 6px 10px 10px 10px;}
-html>body #content { min-height: 600px; } 
-* html body #content { height: 600px; } /* IE */
+div#contact_issues {
+	margin-right: 4px;
+}
+
+div#contact_issues  td.done_checkbox {
+	width: 10px;
+	vertical-align: top;
+	padding-top: 4px;
+}
+
+div#contact_issues  td.issue_subject {
+vertical-align: top;
+width: 100%;
+}
+ 
+
+/********************/
+/*		ADD NOTE FORM		*/
+/********************/
 
 div.add-note {margin-left: 5px;  margin-right: 6px;}
 div.add-note textarea.wiki-edit {margin-bottom: 10px; width: 100%;}
 div.add-note p {margin-bottom: 0px; margin-top: 5px;}
+.note-custom-fields label {margin-right: 10px;}  
 
 /*div#contact_list table.index tbody tr:hover { background-color:#ffffdd; } */
 
@@ -23,9 +37,6 @@ div#sidebar div.contextual {
 	margin-right: 8px;
 }
 
-div#contact_issues {
-	margin-right: 4px;
-}
 
 /* note-data*/
 
@@ -71,11 +82,16 @@ table.subject_header td.subject_info li {
 .icon-email { background-image: url(../images/email.png); }     
 
                            
+h4.contacts_header {border-bottom: 0px;}
+
 
 
 /********************/
 /*		Search		*/
 /********************/   
+h2.contacts_header {border-bottom: 0px;}
+
+
 div.filters h2 {margin-bottom: 5px;}
 div.filters h2 .scope_title a { color: #444; text-decoration: none; } 
 div.filters h2 .scope_title a:hover { text-decoration: none; display: inline; color: #aaa;}
@@ -96,7 +112,8 @@ label#search_overlabel {
 	font-weight: normal; 
 	padding-left: 8px; 
 	top: 5px;
-	white-space: nowrap; 
+	white-space: nowrap;
+	cursor: text; 
 }
 
 /**************************************************************/
@@ -139,6 +156,22 @@ span.tag a.selected {
 	color: black;
 }
 
+span.simple_tag a.selected {
+	color: #999;
+}
+
+#edit_tags_form.box {
+	margin: 1px 5px 0px 0px;
+}      
+
+#edit_tags_form.box label { 
+	margin-right: 5px;  
+	font-weight: bold;      
+}  
+
+#edit_tags_form.box #contact_tags { 
+	margin-bottom: 10px;  
+}
 
 div#tags_data span.contextual {float: none; padding-left: 0px;}
 
@@ -155,48 +188,68 @@ h2 span.tag a {
 #responsible_user a.delete:hover {opacity: 1;}
 #responsible_user img.gravatar {vertical-align: middle;margin: 0 4px 2px 0;}
 
-/* Contacts list*/
-table.index {
-	border-top: 1px solid rgb(239, 239, 239);
-	width: 100%;
-}
 
-table.index td {
+/**************************************************************/
+/*                   CONTACTS_DEALS_LIST														*/
+/**************************************************************/
+
+
+table.contacts.index {
+	border-top: 1px solid rgb(239, 239, 239);
+	border-right: 1px solid rgb(239, 239, 239);
+	border-left: 1px solid rgb(239, 239, 239);
+	width: 100%; 
+	border-spacing: 0px 0px; 
+	margin-bottom: 4px; 
+}    
+
+table.contacts.index tr.selected{ background-color: #507AAA !important;	color: #F8F8F8 !important;} 
+/*table.contacts.index tr.selected a { color: #F8F8F8 !important; } */
+table.contacts.index tr.context-menu-selection h2 { color: #F8F8F8 !important; } 
+table.contacts.index tr.context-menu-selection td { color: #F8F8F8 !important; } 
+table.contacts.index tr.context-menu-selection span.tag a { border: 1px solid #EFEFEF; padding: 2px 3px; }
+table.contacts.index tr.context-menu-selection span.deal-status { border: 1px solid #EFEFEF; padding: 2px 3px; }
+
+table.contacts.index tbody tr:hover { background-color:#ffffdd; } 
+
+table.contacts.index td {
   vertical-align: top;
-  width: 50%;
   color: #666;
   font-size: 12px;
   padding: 8px 0;
-  border-bottom: 1px solid #efefef;
+  border-bottom: 1px solid #efefef; 
 }
 
-div.avatar_subject a img {
-	float: left;
-	margin: 0 10px 10px 0;
-}
+table.contacts.index td.checkbox { padding: 12px 0px 0px 5px; }
+table.contacts.index td.name { width: 50%; padding-right: 10px;} 
+table.contacts.index td.info { width: 50%; padding-right: 5px; }
+table.contacts.index td.avatar {padding: 10px 10px 10px 5px;}
 
-div.avatar_subject div.info {
-	margin-left: 50px;
-}
+table.contacts.index th {padding: 5px 10px 5px 0px; border-bottom: 1px solid #efefef; vertical-align: top;}
+table.contacts.index th.title {text-align: right;}
+table.contacts.index th.sum {text-align: left;}
 
-div.avatar_subject h1 {
-	font-size: 20px;
-	font-weight: normal;
+table.contacts.deals.index td.avatar {padding: 10px 10px 10px 10px;}
+
+
+/*table.contacts.index td.avatar {margin-left: 50px;}*/
+
+table.contacts.index td.name h1 {	font-size: 20px; font-weight: normal;
 	margin: 0;
 	padding: 0;
 }         
 
-div.avatar_subject h1.deal_name {
+table.contacts.index td.name h1.deal_name {
 	font-size: 16px;
 	font-weight: normal;
 	margin: 0;
 	padding: 0;
 }
 
-div.avatar_subject h1.selected { background-color: #ffb;}
-div.avatar_subject h2.selected { background-color: #ffb;}
+table.contacts.index td.name h1.selected { background-color: #ffb;}
+table.contacts.index td.name h2.selected { background-color: #ffb;}
 
-div.avatar_subject h2 {
+table.contacts.index td.name h2 {
 	font-size: 13px;
 	color: #777;
 	font-weight: normal;
@@ -207,7 +260,7 @@ div.avatar_subject h2 {
 	border: none;
 }
 
-div.Right div.avatar_subject div.info {
+div.Right td.name div.info {
 	padding-top: 3px;
 	margin-left: 42px;
 }
@@ -236,18 +289,27 @@ span.deal-status {
 	margin-right: 4px;
 }
             
-dt.contact-note { background-image: url(../images/ticket_note.png); }    
+dt.contact { background-image: url(../images/user_suit.png); }    
 
+.icon-money-dollar { background-image: url(../images/money_dollar.png); }  
 .icon-add-deal { background-image: url(../images/money.png); }  
 .icon-add-employee { background-image: url(../images/user_suit.png); }       
+.icon-link-break { background-image: url(../../../images/link_break.png); }  
+.icon-call { background-image: url(../images/phone.png); }  
+.icon-meeting { background-image: url(../images/calendar_view_day.png); }  
+.icon-vcard { background-image: url(../images/vcard.png); }
 
-/* Thumbnails*/ 
+/**************************************************************/
+/*                   THUMBNAILS																*/
+/**************************************************************/
+
 div.wiki img.tumbnail {
 	border: 1px solid #D7D7D7;
 	height: 150px;
 	padding: 4px;
 	vertical-align: middle;
-	width: 150px;          
+	width: 150px;  
+	background: white;        
 }                   
 
 /**************************************************************/
@@ -268,7 +330,9 @@ table.note_data td.avatar {
 }
 
 table.note_data td.name {
-	padding-left: 0px;       
+	padding-left: 0px;  
+	vertical-align: top;
+	width: 100%;
 }
 
 table.note_data a.delete:hover {opacity: 1;}  
@@ -287,7 +351,9 @@ table.note_data td.avatar { vertical-align: top; width: 38px; padding-top: 10px;
 div#notes table.note_data div.contextual {display: none;}
 div#notes table.note_data:hover div.contextual {display: inline;} 
 */
-table.note_data:hover a.wiki-anchor { display: inline; color: #ddd;} 
+table.note_data:hover h4>a.wiki-anchor { display: inline; color: #ddd;} 
+
+.wiki.note a.wiki-anchor {display: none;}
 
 div.note_data_header table.note_data { margin-bottom: 5px;}
 
@@ -310,11 +376,13 @@ img.thumbnail {
 
 #duplicates ul {margin: 0;  padding: 0;}
 #duplicates li {list-style-type:none; margin: 0px 2px 0px 0px; padding: 0px 0px 0px 0px;}
-#duplicates img.gravatar {vertical-align: middle; margin: 0 4px 2px 0;} 
+#duplicates img.gravatar {vertical-align: middle; margin: 0 4px 2px 0;}  
+
+#duplicates ul.box {padding: 10px; background-color: #FFEBC1;} 
 
 
 /**************************************************************/
-/*                  CONTACTS_PROJECTS													*/
+/*                  CONTACTS_PROJECTS		   			*/
 /**************************************************************/
 
 #contact_projects ul {margin: 0;  padding: 0;}
@@ -323,3 +391,26 @@ img.thumbnail {
 #contact_projects a.delete {opacity: 0.4;}
 #contact_projects a.delete:hover {opacity: 1;}
 #contact_projects img.gravatar {vertical-align: middle; margin: 0 4px 2px 0;}
+
+
+
+/**************************************************************/
+/*                  CONTACT_DATA															*/
+/**************************************************************/
+.avatar img.gravatar {
+	vertical-align: middle;
+}
+
+.tooltip span.tip.contact {
+	line-height: 11px !important;
+	font-size: 9px !important;
+	width: 200px !important;
+}
+
+/**************************************************************/
+/*                  CONTACT ATTRIBUTES SIDEBAR  							*/
+/**************************************************************/
+table.contact.attributes .gravatar {
+	vertical-align: middle;
+	margin: 0 0.5em 0 0;
+}

@@ -15,19 +15,19 @@ class ContactsTagsController < ApplicationController
     else
       flash[:error] = l(:notice_unsuccessful_delete)
     end
-    redirect_to { redirect_to :controller => 'settings', :action => 'plugin', :id => 'contacts'} 
+    redirect_to :back
     
   end
    
   
   def update  
-    @tag.color = params[:tag][:color]    
+    @tag.color_name = params[:tag][:color_name]
     @tag.name = params[:tag][:name]    
     if @tag.save 
                 
       flash[:notice] = l(:notice_successful_update)  
       respond_to do |format| 
-        format.html { redirect_to :controller => 'settings', :action => 'plugin', :id => 'contacts'} 
+        format.html { redirect_to :controller => 'settings', :action => 'plugin', :id => 'contacts', :tab => "tags"} 
         format.xml  { } 
       end  
     else           

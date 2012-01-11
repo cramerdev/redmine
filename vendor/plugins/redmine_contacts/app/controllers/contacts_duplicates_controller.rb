@@ -10,10 +10,12 @@ class ContactsDuplicatesController < ApplicationController
   def duplicates
     search_first_name = params[:contact][:first_name] if params[:contact] && !params[:contact][:first_name].blank? 
     search_last_name = params[:contact][:last_name] if params[:contact] && !params[:contact][:last_name].blank?   
+    search_middle_name = params[:contact][:middle_name] if params[:contact] && !params[:contact][:middle_name].blank?   
                                       
     @contact = (Contact.find(params[:contact_id]) if !params[:contact_id].blank?) || Contact.new  
     @contact.first_name = search_first_name || ""
     @contact.last_name = search_last_name || "" 
+    @contact.middle_name = search_middle_name || "" 
     respond_to do |format|   
       format.html {render :partial => "duplicates", :layout => false if request.xhr?} 
     end

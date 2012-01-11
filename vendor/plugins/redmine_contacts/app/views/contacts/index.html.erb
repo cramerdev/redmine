@@ -3,7 +3,7 @@
 </div>                  
 
    <div class="filters">
-		<h2>    
+		<h2 class="contacts_header">    
 		<span id="select_scope" style="display:none;">
 			 
 			<% form_tag(params, :method => :get) do %>  
@@ -12,7 +12,7 @@
 		</span> 
 			
 		<span id='scope_header' class="scope_title">     
-		<%= link_to "#{contacts_filter_name(params[:is_company])}(#{@contacts_pages.item_count})", {}, :onclick => "Element.toggle('select_scope'); Element.toggle('scope_header'); return false;" %> 
+		<%= link_to "#{contacts_filter_name(params[:is_company])}(#{@contacts_count})", {}, :onclick => "Element.toggle('select_scope'); Element.toggle('scope_header'); return false;" %> 
 		</span>         
 		
 		<% if !@tag %>
@@ -48,7 +48,12 @@
    </div>  
 <div id="contact_list">  
 	<%= render :partial => 'list' %>   
-</div>
+</div>     
+
+<% other_formats_links do |f| %>
+	<%= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
+<% end %>
+
 
 <% html_title l(:label_contact_plural) %>  
 
@@ -57,10 +62,17 @@
 	<%= render :partial => 'common/sidebar' %>
 	<%= render :partial => 'tags_cloud' %>
 	<%= render :partial => 'notes/last_notes', :object => @last_notes %>        
-	<%= render :partial => 'common/recently_viewed' %>
+	<%= render :partial => 'common/recently_viewed' %>    
+
+	<%= call_hook(:view_contacts_sidebar_contacts_list_bottom) %>    
+
 <% end %>
 
 <% content_for(:header_tags) do %>
-  <%= stylesheet_link_tag :contacts, :plugin => 'redmine_contacts' %>
-<% end %>
+	<%= javascript_include_tag :contacts, :plugin => 'redmine_contacts'  %>
+	<%= stylesheet_link_tag :contacts_sidebar, :plugin => 'redmine_contacts' %>
+	<%= stylesheet_link_tag :contacts, :plugin => 'redmine_contacts' %> 
+	<%= auto_discovery_link_tag(:atom, {:format => 'atom', :key => User.current.rss_key}, :title => l(:label_contact_plural)) %>
+ 
+<% end %>     
 
