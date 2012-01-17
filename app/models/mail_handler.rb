@@ -133,7 +133,8 @@ class MailHandler < ActionMailer::Base
     if issue.subject.blank?
       issue.subject = '(no subject)'
     end
-    issue.description = cleaned_up_text_body
+    sender_email = email.from.to_a.first.to_s.strip
+    issue.description = "\nFrom: #{sender_email}\n\n" + cleaned_up_text_body
 
     # add To and Cc as watchers before saving so the watchers can reply to Redmine
     add_watchers(issue)
