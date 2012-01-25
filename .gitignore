@@ -4,6 +4,7 @@
 /config/configuration.yml
 /config/database.yml
 /config/email.yml
+/config/newrelic.yml
 /config/initializers/session_store.rb
 /coverage
 /db/*.db
@@ -14,6 +15,7 @@
 /lib/redmine/scm/adapters/mercurial/redminehelper.pyo
 /log/*.log*
 /log/mongrel_debug
+/log/newrelic_agent_store.*
 /public/dispatch.*
 /public/plugin_assets
 /tmp/*
