@@ -112,3 +112,29 @@ ul.toc { float: right; }
 
 /* # Added by Marino on 8/2/10 */
 div.wiki pre { padding: 10px; }
+
+/* # Added by Smith on 2/9/12 */
+/* In which we hide many issue fields. */
+.issue .attributes .start-date,
+.issue .attributes .due-date,
+.issue .attributes .progress,
+.issue .attributes .spent-time,
+#issue-form .tabular .splitcontentright,
+#attributes .splitcontentright,
+#attachments_fields .inline,
+#watchers_form label,
+#issue_descr_fields #issue_is_private_label { visibility: hidden; }
+
+.issue .attributes:hover .start-date,
+.issue .attributes:hover .due-date,
+.issue .attributes:hover .progress,
+.issue .attributes:hover .spent-time,
+#issue-form .tabular:hover .splitcontentright,
+#attributes:hover .splitcontentright,
+#attachments_fields:hover .inline,
+#watchers_form:hover label,
+#issue_descr_fields:hover #issue_is_private_label { visibility: visible; }
+
+/* some things take up too much space */
+#watchers_form { height: 20px; }
+#watchers_form:hover { height: auto; }
